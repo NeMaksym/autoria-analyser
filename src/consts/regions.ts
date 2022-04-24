@@ -27,7 +27,7 @@ const REGIONS: Regions = {
     22: 'Закарпаття',
     23: 'Херсон',
     24: 'Черкаси',
-    25: 'чернівці'
+    25: 'Чернівці'
 }
 
 export default REGIONS;
