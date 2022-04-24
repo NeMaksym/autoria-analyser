@@ -1,5 +1,5 @@
 import { Grid } from '@mui/material';
-import Filters from './components/Filters';
+import Filters from 'components/Filters';
 
 function App() {
   return (

@@ -1,7 +1,7 @@
 import { useFormik } from 'formik';
 import { useEffect } from 'react';
 
-import Filters from './Filters';
+import Filters from 'components/Filters/Filters';
 
 
 const FiltersContainer = () => {

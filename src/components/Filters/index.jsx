@@ -1,3 +1,3 @@
-import FiltersContainer from './FiltersContainer';
+import FiltersContainer from 'components/Filters/FiltersContainer';
 
 export default FiltersContainer;
