@@ -1,5 +1,6 @@
 import { Grid } from '@mui/material';
 import Filters from 'components/Filters';
+import ByYearGraph from 'components/Graphs/ByYear/ByYearGraph';
 
 function App() {
   return (
@@ -8,7 +9,7 @@ function App() {
         <Filters />
       </Grid>
       <Grid item xs={12}>
-        {/* TODO: graphs */}
+        <ByYearGraph />
       </Grid>
     </Grid>
   );
