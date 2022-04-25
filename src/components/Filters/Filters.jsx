@@ -35,16 +35,16 @@ const Filters = ({ formik, compareGearboxes, setCompareGearboxes }) => {
                         </Grid>
 
                         <Grid item>
-                            <TextField
-                                sx={{ width: 100 }}
-                                label="Двигун до"
-                                type="number"
-                                InputLabelProps={{
-                                    shrink: true,
-                                }}
-                                value={formik.values.engineVolumeTo}
-                                onChange={e => formik.setFieldValue('engineVolumeTo', e.target.value)}
-                            />
+                            <FormControl sx={{ width: 100 }}>
+                                <InputLabel>Двигун до</InputLabel>
+                                <OutlinedInput
+                                    label="Двигун до"
+                                    type="number"
+                                    endAdornment={<InputAdornment position="end">л.</InputAdornment>}
+                                    value={formik.values.engineVolumeTo}
+                                    onChange={e => formik.setFieldValue('engineVolumeTo', e.target.value)}
+                                />
+                            </FormControl>
                         </Grid>
                         <Grid item>
                             <TextField
