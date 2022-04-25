@@ -28,8 +28,8 @@ const Filters = ({ formik }) => {
                                     label="Price to"
                                     type="number"
                                     startAdornment={<InputAdornment position="start">$</InputAdornment>}
-                                    value={formik.values.priceTo}
-                                    onChange={e => formik.setFieldValue('priceTo', e.target.value)}
+                                    value={formik.values.price_do}
+                                    onChange={e => formik.setFieldValue('price_do', e.target.value)}
                                 />
                             </FormControl>
                         </Grid>
@@ -42,8 +42,8 @@ const Filters = ({ formik }) => {
                                 InputLabelProps={{
                                     shrink: true,
                                 }}
-                                value={formik.values.engineTo}
-                                onChange={e => formik.setFieldValue('engineTo', e.target.value)}
+                                value={formik.values.engineVolumeTo}
+                                onChange={e => formik.setFieldValue('engineVolumeTo', e.target.value)}
                             />
                         </Grid>
                         <Grid item>
@@ -54,8 +54,8 @@ const Filters = ({ formik }) => {
                                 InputLabelProps={{
                                     shrink: true,
                                 }}
-                                value={formik.values.yearFrom}
-                                onChange={e => formik.setFieldValue('yearFrom', e.target.value)}
+                                value={formik.values['s_yers[0]']}
+                                onChange={e => formik.setFieldValue('s_yers[0]', e.target.value)}
                             />
                         </Grid>
                     </Grid>

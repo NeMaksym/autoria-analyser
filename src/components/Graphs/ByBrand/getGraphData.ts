@@ -11,21 +11,36 @@ interface BarData {
     datasets: Dataset[]
 }
 
-const getGraphData = (data: ByBrandRes): BarData => {
+type GetGraphData = (
+    data: ByBrandRes,
+    compareGearboxes: boolean
+) => BarData;
+
+const getGraphData: GetGraphData = (data, compareGearboxes) => {
     const graphData: BarData = {
         labels: [],
-        datasets: [
-            {
+        datasets: []
+    }
+
+    if (compareGearboxes) {
+        graphData.datasets
+            .push({
                 label: "Automat",
                 data: [],
                 backgroundColor: `rgb(255, 99, 132)`
-            },
-            {
-                label: 'Mechanic',
-                data: [],
-                backgroundColor: 'rgb(75, 192, 192)'
-            },
-        ]
+            })
+
+        graphData.datasets.push({
+            label: 'Mechanic',
+            data: [],
+            backgroundColor: 'rgb(75, 192, 192)'
+        })
+    } else {
+        graphData.datasets.push({
+            label: 'Total',
+            data: [],
+            backgroundColor: 'rgb(75, 192, 192)'
+        })
     }
 
     Object.entries(data)
@@ -37,13 +52,16 @@ const getGraphData = (data: ByBrandRes): BarData => {
         })
         .slice(Object.keys(data).length - 25)
         .forEach(brandEntrie => {
-            console.log(brandEntrie)
-
             const { name, countFilterA, countFilterM } = brandEntrie[1]
 
             graphData.labels.push(name)
-            graphData.datasets[0].data.push(countFilterA)
-            graphData.datasets[1].data.push(countFilterM)
+
+            if (compareGearboxes) {
+                graphData.datasets[0].data.push(countFilterA)
+                graphData.datasets[1].data.push(countFilterM)
+            } else {
+                graphData.datasets[0].data.push(countFilterA + countFilterM)
+            }
         })
 
     return graphData

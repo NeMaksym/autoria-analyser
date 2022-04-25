@@ -4,23 +4,18 @@ import { useEffect } from 'react';
 import Filters from 'components/Filters/Filters';
 
 
-const FiltersContainer = () => {
+const FiltersContainer = ({ filters, setFilters }) => {
     const formik = useFormik({
-        initialValues: {
-            priceTo: 10000,
-            engineTo: '',
-            yearFrom: '',
-            compareGearboxes: false,
-        },
+        initialValues: filters,
     });
 
     useEffect(() => {
         const delayDebounceFn = setTimeout(() => {
-            // TODO: Search
+            setFilters(formik.values)
         }, 1500)
 
         return () => clearTimeout(delayDebounceFn)
-    }, [formik.values])
+    }, [formik.values, setFilters])
 
     return <Filters formik={formik} />
 }
