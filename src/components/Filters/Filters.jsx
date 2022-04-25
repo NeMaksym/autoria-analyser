@@ -1,3 +1,4 @@
+import InfoIcon from '@mui/icons-material/Info';
 import {
     FormControl,
     InputLabel,
@@ -8,7 +9,8 @@ import {
     FormGroup,
     FormControlLabel,
     Checkbox,
-    TextField
+    TextField,
+    Tooltip,
 } from "@mui/material";
 
 const Filters = ({ formik, compareGearboxes, setCompareGearboxes }) => {
@@ -64,10 +66,46 @@ const Filters = ({ formik, compareGearboxes, setCompareGearboxes }) => {
                         <FormControlLabel
                             name="compareGearboxes"
                             control={<Checkbox checked={compareGearboxes} />}
-                            label="Показати розподілення АКПП до МКПП"
                             onChange={() => setCompareGearboxes(!compareGearboxes)}
+                            label={
+                                <>
+                                    Показати розподілення АКПП до МКПП
+                                    <Tooltip
+                                        disableFocusListener
+                                        disableTouchListener
+                                        title="Відфільтрувавши оголошення за вказаними параметрами,
+                                         показує скільки з них на автоматі, а скільки на механіці"
+                                    >
+                                        <InfoIcon fontSize="small" sx={{ fontSize: 16, ml: '2px' }} />
+                                    </Tooltip>
+                                </>
+                            }
                         />
-                        <FormControlLabel disabled control={<Checkbox checked />} label="Фільтри за замовчуванням" />
+
+                        <FormControlLabel
+                            disabled
+                            control={<Checkbox checked />}
+                            label={
+                                <>
+                                    Фільтри за замовчуванням
+                                    <Tooltip
+                                        disableFocusListener
+                                        disableTouchListener
+                                        title={
+                                            <>
+                                                • Тільки вживані авто <br />
+                                                • Легкові автомобілі <br />
+                                                • З фото <br />
+                                                • Не показувати продані <br />
+                                                • Виключити Укр і Рос марки (ВАЗ, ЗАЗ) <br />
+                                            </>
+                                        }
+                                    >
+                                        <InfoIcon fontSize="small" sx={{ fontSize: 16, ml: '2px' }} />
+                                    </Tooltip>
+                                </>
+                            }
+                        />
                     </FormGroup>
                 </Grid>
             </Grid>
