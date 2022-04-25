@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Grid } from '@mui/material';
+import { Grid, Typography } from '@mui/material';
 import Filters from 'components/Filters';
 import ByYearGraph from 'components/Graphs/ByYear/ByYearGraph';
 import ByRegionGraph from 'components/Graphs/ByRegion/ByRegionGraph'
@@ -15,8 +15,16 @@ function App() {
   const [comapreGearboxes, setCompareGearboxes] = useState<boolean>(false)
 
   return (
-    <Grid container spacing={2} sx={{ p: '32px', pt: '48px' }}>
-      <Grid item>
+    <Grid container spacing={2} sx={{ p: '32px' }}>
+      <Grid item xs={12}>
+        <Typography
+          variant='h4'
+          component='h1'
+          sx={{ fontFamily: 'Orelega One' }}
+          children="autoRIA Analyser"
+        />
+      </Grid>
+      <Grid item md={6}>
         <Filters
           filters={filters}
           setFilters={setFilters}
