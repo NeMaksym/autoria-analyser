@@ -5,6 +5,7 @@ import ByYearGraph from 'components/Graphs/ByYear/ByYearGraph';
 import ByRegionGraph from 'components/Graphs/ByRegion/ByRegionGraph'
 import ByBrandGraph from 'components/Graphs/ByBrand/ByBrandGraph';
 import { FilterValues } from 'types/filterTypes';
+import Info from './components/Info/Info'
 
 function App() {
   const [filters, setFilters] = useState<FilterValues>({
@@ -40,6 +41,9 @@ function App() {
       </Grid>
       <Grid item xs={12}>
         <ByBrandGraph filters={filters} compareGearboxes={comapreGearboxes} />
+      </Grid>
+      <Grid item md={12}>
+        <Info />
       </Grid>
     </Grid>
   );
