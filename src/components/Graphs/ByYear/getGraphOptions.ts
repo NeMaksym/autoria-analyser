@@ -13,12 +13,12 @@ const getGraphOptions = (data: ByYearRes) => {
         plugins: {
             title: {
                 display: true,
-                text: 'Cars Distribution By Years',
+                text: 'За роком випуску',
             },
             tooltip: {
                 callbacks: {
                     label: ({ dataset, label, formattedValue }: LabelProps) => {
-                        if (dataset.label === 'Total') {
+                        if (dataset.label === 'Загалом на ринку') {
                             return data[label].countBase
                         }
 

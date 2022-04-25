@@ -23,9 +23,9 @@ const Filters = ({ formik, compareGearboxes, setCompareGearboxes }) => {
                     <Grid container spacing={2}>
                         <Grid item>
                             <FormControl sx={{ width: 200 }}>
-                                <InputLabel>Price to</InputLabel>
+                                <InputLabel>Ціна до</InputLabel>
                                 <OutlinedInput
-                                    label="Price to"
+                                    label="Ціна до"
                                     type="number"
                                     startAdornment={<InputAdornment position="start">$</InputAdornment>}
                                     value={formik.values.price_do}
@@ -37,7 +37,7 @@ const Filters = ({ formik, compareGearboxes, setCompareGearboxes }) => {
                         <Grid item>
                             <TextField
                                 sx={{ width: 100 }}
-                                label="Engine to"
+                                label="Двигун до"
                                 type="number"
                                 InputLabelProps={{
                                     shrink: true,
@@ -49,7 +49,7 @@ const Filters = ({ formik, compareGearboxes, setCompareGearboxes }) => {
                         <Grid item>
                             <TextField
                                 sx={{ width: 100 }}
-                                label="Year from"
+                                label="Рік від"
                                 type="number"
                                 InputLabelProps={{
                                     shrink: true,
@@ -66,10 +66,10 @@ const Filters = ({ formik, compareGearboxes, setCompareGearboxes }) => {
                         <FormControlLabel
                             name="compareGearboxes"
                             control={<Checkbox checked={compareGearboxes} />}
-                            label="Compare A to M"
+                            label="Показати розподілення АКПП до МКПП"
                             onChange={() => setCompareGearboxes(!compareGearboxes)}
                         />
-                        <FormControlLabel disabled control={<Checkbox checked />} label="Default filters" />
+                        <FormControlLabel disabled control={<Checkbox checked />} label="Фільтри за замовчуванням" />
                     </FormGroup>
                 </Grid>
             </Grid>

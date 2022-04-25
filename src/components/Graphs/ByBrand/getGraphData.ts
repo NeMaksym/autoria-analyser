@@ -24,21 +24,20 @@ const getGraphData: GetGraphData = (data, compareGearboxes) => {
     }
 
     if (compareGearboxes) {
-        graphData.datasets
-            .push({
-                label: "Automat",
-                data: [],
-                backgroundColor: GRAPH_PALETTE.automatColor
-            })
+        graphData.datasets.push({
+            label: "Оголошень з АКПП",
+            data: [],
+            backgroundColor: GRAPH_PALETTE.automatColor
+        })
 
         graphData.datasets.push({
-            label: 'Mechanic',
+            label: 'Оголошень з МКПП',
             data: [],
             backgroundColor: GRAPH_PALETTE.mechanicColor
         })
     } else {
         graphData.datasets.push({
-            label: 'Total',
+            label: 'Всього (на основі фільтрів)',
             data: [],
             backgroundColor: GRAPH_PALETTE.mechanicColor
         })

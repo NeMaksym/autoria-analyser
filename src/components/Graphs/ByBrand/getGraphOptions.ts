@@ -3,7 +3,7 @@ const getGraphOptions = () => {
         plugins: {
             title: {
                 display: true,
-                text: 'Cars Distribution By Brand',
+                text: 'За брендом',
             },
             legend: {
                 position: 'bottom',

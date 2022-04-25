@@ -7,6 +7,8 @@ import SearchParams from 'classes/SearchParams';
 import { FilterValues } from 'types/filterTypes';
 import getGraphData from 'components/Graphs/ByBrand/getGraphData';
 import getGraphOptions from 'components/Graphs/ByBrand/getGraphOptions';
+import PendingMsg from 'components/PendingMsg/PendingMsg';
+import ErrorMsg from 'components/ErrorMsg/ErrorMsg';
 
 ChartJS.register(
     CategoryScale,
@@ -40,8 +42,8 @@ const ByBrandGraph = ({ filters, compareGearboxes }: Props) => {
             .finally(() => setIsPending(false))
     }, [filters])
 
-    if (isError) return <h2>Something went wrong. Try again later</h2>
-    if (isPending) return <h2>Loading...</h2>
+    if (isError) return <ErrorMsg />
+    if (isPending) return <PendingMsg />
 
     return (
         <Bar

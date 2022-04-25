@@ -26,17 +26,17 @@ const getGraphData: GetGraphData = (data, compareGearboxes) => {
     if (compareGearboxes) {
         [
             {
-                label: "Filtered - Automat",
+                label: "Оголошень з АКПП",
                 data: [],
                 backgroundColor: GRAPH_PALETTE.automatColor
             },
             {
-                label: 'Filtered - Mechanic',
+                label: 'Оголошень з МКПП',
                 data: [],
                 backgroundColor: GRAPH_PALETTE.mechanicColor
             },
             {
-                label: 'Total',
+                label: 'Загалом на ринку',
                 data: [],
                 backgroundColor: GRAPH_PALETTE.totalColor
             },
@@ -44,12 +44,12 @@ const getGraphData: GetGraphData = (data, compareGearboxes) => {
     } else {
         [
             {
-                label: 'Filtered - Total',
+                label: 'Всього (на основі фільтрів)',
                 data: [],
                 backgroundColor: GRAPH_PALETTE.mechanicColor
             },
             {
-                label: 'Total',
+                label: 'Загалом на ринку',
                 data: [],
                 backgroundColor: GRAPH_PALETTE.totalColor,
             },

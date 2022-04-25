@@ -14,14 +14,14 @@ const getGraphOptions = (data: ByYearRes) => {
         plugins: {
             title: {
                 display: true,
-                text: 'Cars Distribution By Region',
+                text: 'За регіоном',
             },
             tooltip: {
                 callbacks: {
                     label: ({ dataset, label, formattedValue }: LabelProps) => {
                         const regionId = Object.keys(REGIONS).find(regionId => REGIONS[regionId] === label)
 
-                        if (dataset.label === 'Total' && regionId) {
+                        if (dataset.label === 'Загалом на ринку' && regionId) {
                             return data[regionId].countBase
                         }
 
