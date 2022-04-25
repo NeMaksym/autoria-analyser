@@ -8,6 +8,9 @@ class SearchParams {
         category_id: 1,
         with_photo: 1,
         saledParam: 2,
+        originExclude: 1,
+        'brandOrigin[0]': 643,
+        'brandOrigin[1]': 804,
     }
 
     get values() {

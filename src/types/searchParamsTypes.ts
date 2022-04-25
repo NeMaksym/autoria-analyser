@@ -10,6 +10,11 @@ export interface Params extends CustomParams {
 
     /** Hide saled: 2 -- true */
     saledParam: 2,
+
+    /** Exclude country: 643 - Rus, 804 - Ukr */
+    originExclude: 1,
+    'brandOrigin[0]': 643,
+    'brandOrigin[1]': 804,
 }
 
 export interface CustomParams {
