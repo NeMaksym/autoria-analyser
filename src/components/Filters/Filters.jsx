@@ -23,8 +23,9 @@ const Filters = ({ formik, compareGearboxes, setCompareGearboxes }) => {
                     <Grid container spacing={2}>
                         <Grid item>
                             <FormControl sx={{ width: 200 }}>
-                                <InputLabel>Ціна до</InputLabel>
+                                <InputLabel shrink>Ціна до</InputLabel>
                                 <OutlinedInput
+                                    notched
                                     label="Ціна до"
                                     type="number"
                                     startAdornment={<InputAdornment position="start">$</InputAdornment>}
@@ -36,8 +37,9 @@ const Filters = ({ formik, compareGearboxes, setCompareGearboxes }) => {
 
                         <Grid item>
                             <FormControl sx={{ width: 100 }}>
-                                <InputLabel>Двигун до</InputLabel>
+                                <InputLabel shrink>Двигун до</InputLabel>
                                 <OutlinedInput
+                                    notched
                                     label="Двигун до"
                                     type="number"
                                     endAdornment={<InputAdornment position="end">л.</InputAdornment>}
