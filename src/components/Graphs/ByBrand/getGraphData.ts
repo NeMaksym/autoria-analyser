@@ -1,4 +1,5 @@
 import { ByBrandRes } from "types/searchTypes";
+import GRAPH_PALETTE from 'consts/graphPalette';
 
 interface Dataset {
     label: string
@@ -27,19 +28,19 @@ const getGraphData: GetGraphData = (data, compareGearboxes) => {
             .push({
                 label: "Automat",
                 data: [],
-                backgroundColor: `rgb(255, 99, 132)`
+                backgroundColor: GRAPH_PALETTE.automatColor
             })
 
         graphData.datasets.push({
             label: 'Mechanic',
             data: [],
-            backgroundColor: 'rgb(75, 192, 192)'
+            backgroundColor: GRAPH_PALETTE.mechanicColor
         })
     } else {
         graphData.datasets.push({
             label: 'Total',
             data: [],
-            backgroundColor: 'rgb(75, 192, 192)'
+            backgroundColor: GRAPH_PALETTE.mechanicColor
         })
     }
 

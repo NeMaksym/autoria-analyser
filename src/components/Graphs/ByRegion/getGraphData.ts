@@ -1,5 +1,6 @@
 import REGIONS from "consts/regions";
 import { ByRegionRes } from "types/searchTypes";
+import GRAPH_PALETTE from 'consts/graphPalette';
 
 interface Dataset {
     label: string
@@ -28,17 +29,17 @@ const getGraphData: GetGraphData = (data, compareGearboxes) => {
             {
                 label: "Filtered - Automat",
                 data: [],
-                backgroundColor: `rgb(255, 99, 132)`
+                backgroundColor: GRAPH_PALETTE.automatColor
             },
             {
                 label: 'Filtered - Mechanic',
                 data: [],
-                backgroundColor: 'rgb(75, 192, 192)'
+                backgroundColor: GRAPH_PALETTE.mechanicColor
             },
             {
                 label: 'Total',
                 data: [],
-                backgroundColor: 'rgba(53, 162, 235, 0.15)'
+                backgroundColor: GRAPH_PALETTE.totalColor
             },
         ].forEach(item => graphData.datasets.push(item))
     } else {
@@ -46,12 +47,12 @@ const getGraphData: GetGraphData = (data, compareGearboxes) => {
             {
                 label: 'Filtered - Total',
                 data: [],
-                backgroundColor: 'rgb(75, 192, 192)'
+                backgroundColor: GRAPH_PALETTE.mechanicColor
             },
             {
                 label: 'Total',
                 data: [],
-                backgroundColor: 'rgba(53, 162, 235, 0.15)'
+                backgroundColor: GRAPH_PALETTE.totalColor
             },
         ].forEach(item => graphData.datasets.push(item))
     }
