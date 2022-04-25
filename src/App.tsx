@@ -11,22 +11,27 @@ function App() {
     price_do: 10000,
     engineVolumeTo: undefined,
     's_yers[0]': undefined,
-    compareGearboxes: false,
   })
+  const [comapreGearboxes, setCompareGearboxes] = useState<boolean>(false)
 
   return (
     <Grid container spacing={2} sx={{ p: '32px', pt: '48px' }}>
       <Grid item>
-        <Filters filters={filters} setFilters={setFilters} />
+        <Filters
+          filters={filters}
+          setFilters={setFilters}
+          compareGearboxes={comapreGearboxes}
+          setCompareGearboxes={setCompareGearboxes}
+        />
       </Grid>
       <Grid item xs={12}>
-        <ByYearGraph filters={filters} />
+        <ByYearGraph filters={filters} compareGearboxes={comapreGearboxes} />
       </Grid>
       <Grid item xs={12}>
-        <ByRegionGraph filters={filters} />
+        <ByRegionGraph filters={filters} compareGearboxes={comapreGearboxes} />
       </Grid>
       <Grid item xs={12}>
-        <ByBrandGraph filters={filters} />
+        <ByBrandGraph filters={filters} compareGearboxes={comapreGearboxes} />
       </Grid>
     </Grid>
   );

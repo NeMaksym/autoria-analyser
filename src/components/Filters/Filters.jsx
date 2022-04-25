@@ -11,7 +11,7 @@ import {
     TextField
 } from "@mui/material";
 
-const Filters = ({ formik }) => {
+const Filters = ({ formik, compareGearboxes, setCompareGearboxes }) => {
     return (
         <Paper>
             <Grid
@@ -65,9 +65,9 @@ const Filters = ({ formik }) => {
                     <FormGroup>
                         <FormControlLabel
                             name="compareGearboxes"
-                            control={<Checkbox checked={formik.values.compareGearboxes} />}
+                            control={<Checkbox checked={compareGearboxes} />}
                             label="Compare A to M"
-                            onChange={() => formik.setFieldValue('compareGearboxes', !formik.values.compareGearboxes)}
+                            onChange={() => setCompareGearboxes(!compareGearboxes)}
                         />
                         <FormControlLabel disabled control={<Checkbox checked />} label="Default filters" />
                     </FormGroup>

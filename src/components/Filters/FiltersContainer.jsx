@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 import Filters from 'components/Filters/Filters';
 
 
-const FiltersContainer = ({ filters, setFilters }) => {
+const FiltersContainer = ({ filters, setFilters, compareGearboxes, setCompareGearboxes }) => {
     const formik = useFormik({
         initialValues: filters,
     });
@@ -17,7 +17,13 @@ const FiltersContainer = ({ filters, setFilters }) => {
         return () => clearTimeout(delayDebounceFn)
     }, [formik.values, setFilters])
 
-    return <Filters formik={formik} />
+    return (
+        <Filters
+            formik={formik}
+            compareGearboxes={compareGearboxes}
+            setCompareGearboxes={setCompareGearboxes}
+        />
+    )
 }
 
 export default FiltersContainer;

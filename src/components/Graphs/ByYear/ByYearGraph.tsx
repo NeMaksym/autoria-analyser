@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { omit } from 'lodash'
 import { Bar } from 'react-chartjs-2';
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js';
 
@@ -20,17 +19,16 @@ ChartJS.register(
 
 interface Props {
     filters: FilterValues
+    compareGearboxes: boolean
 }
 
-const ByYearGraph = ({ filters }: Props) => {
+const ByYearGraph = ({ filters, compareGearboxes }: Props) => {
     const [data, setData] = useState({})
     const [isError, setIsError] = useState(false)
     const [isPending, setIsPending] = useState(false)
 
     useEffect(() => {
-        const searchParams = new SearchParams({
-            ...omit(filters, ['compareGearboxes'])
-        })
+        const searchParams = new SearchParams(filters)
 
         setIsError(false)
         setIsPending(true)
@@ -45,7 +43,13 @@ const ByYearGraph = ({ filters }: Props) => {
     if (isError) return <h2>Something went wrong. Try again later</h2>
     if (isPending) return <h2>Loading...</h2>
 
-    return <Bar options={getGraphOptions(data)} data={getGraphData(data, filters.compareGearboxes)} height={80} />;
+    return (
+        <Bar
+            options={getGraphOptions(data)}
+            data={getGraphData(data, compareGearboxes)}
+            height={80}
+        />
+    )
 
 }
 
