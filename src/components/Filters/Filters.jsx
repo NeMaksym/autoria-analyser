@@ -13,12 +13,8 @@ import {
 
 const Filters = ({ formik, compareGearboxes, setCompareGearboxes }) => {
     return (
-        <Paper>
-            <Grid
-                container
-                spacing={1}
-                sx={{ p: '16px' }}
-            >
+        <Paper sx={{ p: "16px" }}>
+            <Grid container spacing={1}>
                 <Grid item xs={12}>
                     <Grid container spacing={2}>
                         <Grid item>
