@@ -2,13 +2,15 @@ import axios from "axios";
 
 import REGIONS from 'consts/regions';
 import SearchParams from "classes/SearchParams";
-import { Gearbox, ByYearRes, ByRegionRes, ByBrandRes } from "types/searchTypes";
+import { Gearbox, ByYearRes, ByRegionRes, ByBrandRes, ModelData } from "types/searchTypes";
 
 class Search {
     // private searchUrl = 'https://auto.ria.com/demo/bu/searchPage/search/indexes/auto?'
     private searchUrl = 'http://localhost:8000/demo/bu/searchPage/search/indexes/auto?'
     // private brandsUrl = 'https://auto.ria.com/demo/api/categories/1/brands/_active/_with_count/_with_country?langId=2'
     private brandsUrl = 'http://localhost:8000/demo/api/categories/1/brands/_active/_with_count/_with_country?langId=2'
+    // private modelUrl = 'https://auto.ria.com/api/categories/1/marks/6/models/_active/_with_count?langId=2'
+    private modelUrl = 'http://localhost:8000/api/categories/1/marks/{brandId}/models/_active/_with_count?langId=2'
 
     async byYear(filterParams: SearchParams): Promise<ByYearRes> {
         const requests: Promise<void>[] = []
@@ -164,6 +166,38 @@ class Search {
         await axios.all(requests)
 
         return res
+    }
+
+    async byModel(filterParams: SearchParams, brandId: string): Promise<ModelData[]> {
+        const models: ModelData[] = await axios
+            .get(this.modelUrl.replace('{brandId}', brandId))
+            .then(({ data }: { data: ModelData[] }) => data)
+
+        const requests: Promise<void>[] = []
+
+        models.forEach(model => {
+            filterParams
+                .setBrand(Number(brandId), model.value)
+                .setGearbox(Gearbox.auto)
+
+            requests.push(
+                axios
+                    .get(this.searchUrl, { params: filterParams.values })
+                    .then(({ data }) => model.countFilterA = data.result.search_result_common.count)
+            )
+
+            filterParams.setGearbox(Gearbox.mechanic)
+
+            requests.push(
+                axios
+                    .get(this.searchUrl, { params: filterParams.values })
+                    .then(({ data }) => model.countFilterM = data.result.search_result_common.count)
+            )
+        })
+
+        await axios.all(requests)
+
+        return models
     }
 }
 

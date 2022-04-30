@@ -1,11 +1,13 @@
 import { useState } from 'react';
 import { Grid, Typography } from '@mui/material';
+
 import Filters from 'components/Filters';
-import ByYearGraph from 'components/Graphs/ByYear/ByYearGraph';
-import ByRegionGraph from 'components/Graphs/ByRegion/ByRegionGraph'
-import ByBrandGraph from 'components/Graphs/ByBrand/ByBrandGraph';
+import Info from './components/Info/Info';
 import { FilterValues } from 'types/filterTypes';
-import Info from './components/Info/Info'
+import ByModel from 'components/Graphs/ByModel/ByModel';
+import ByYearGraph from 'components/Graphs/ByYear/ByYearGraph';
+import ByBrandGraph from 'components/Graphs/ByBrand/ByBrandGraph';
+import ByRegionGraph from 'components/Graphs/ByRegion/ByRegionGraph';
 
 function App() {
   const [filters, setFilters] = useState<FilterValues>({
@@ -14,6 +16,7 @@ function App() {
     's_yers[0]': undefined,
   })
   const [comapreGearboxes, setCompareGearboxes] = useState<boolean>(false)
+  const [activeBrandId, setActiveBrandId] = useState<string | undefined>(undefined)
 
   return (
     <Grid container spacing={2} sx={{ p: '32px' }}>
@@ -40,7 +43,18 @@ function App() {
         <ByRegionGraph filters={filters} compareGearboxes={comapreGearboxes} />
       </Grid>
       <Grid item xs={12}>
-        <ByBrandGraph filters={filters} compareGearboxes={comapreGearboxes} />
+        <ByBrandGraph
+          filters={filters}
+          compareGearboxes={comapreGearboxes}
+          setActiveBrandId={setActiveBrandId}
+        />
+      </Grid>
+      <Grid item xs={12}>
+        <ByModel
+          filters={filters}
+          compareGearboxes={comapreGearboxes}
+          activeBrandId={activeBrandId}
+        />
       </Grid>
       <Grid item md={12}>
         <Info />

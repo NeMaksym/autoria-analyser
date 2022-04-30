@@ -91,12 +91,12 @@ class SearchParams {
         return this
     }
 
-    setBrand(brandId?: number) {
+    setBrand(brandId?: number, modelId?: number) {
         if (typeof brandId === 'number') {
             this.params = {
                 ...this.params,
-                'marka_id[0]': Number(brandId),
-                'model_id[0]': 0
+                'marka_id[0]': brandId,
+                'model_id[0]': modelId || 0,
             }
         } else {
             this.params = {

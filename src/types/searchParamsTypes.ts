@@ -45,5 +45,5 @@ export interface CustomParams {
     /** Brand */
     'marka_id[0]'?: number,
     /** Model: 0 -- all */
-    'model_id[0]'?: 0,
+    'model_id[0]'?: number,
 }

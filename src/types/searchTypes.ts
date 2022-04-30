@@ -27,3 +27,13 @@ export interface ByBrandRes {
         countFilterM: number
     }
 }
+
+export interface ModelData {
+    name: string
+    value: number
+    count: number
+    isGroup: 0 | 1
+    parentId: number
+    countFilterA: number
+    countFilterM: number
+}
