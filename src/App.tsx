@@ -1,13 +1,12 @@
 import { useState } from 'react';
-import { Grid, Typography } from '@mui/material';
+import { Grid } from '@mui/material';
+import { Routes, Route, Navigate } from "react-router-dom";
 
+import Graphs from 'components/Graphs';
+import Info from 'components/Info/Info';
 import Filters from 'components/Filters';
-import Info from './components/Info/Info';
+import TopBar from 'components/TopBar/TopBar';
 import { FilterValues } from 'types/filterTypes';
-import ByModel from 'components/Graphs/ByModel/ByModel';
-import ByYearGraph from 'components/Graphs/ByYear/ByYearGraph';
-import ByBrandGraph from 'components/Graphs/ByBrand/ByBrandGraph';
-import ByRegionGraph from 'components/Graphs/ByRegion/ByRegionGraph';
 
 function App() {
   const [filters, setFilters] = useState<FilterValues>({
@@ -16,50 +15,31 @@ function App() {
     's_yers[0]': undefined,
   })
   const [comapreGearboxes, setCompareGearboxes] = useState<boolean>(false)
-  const [activeBrandId, setActiveBrandId] = useState<string | undefined>(undefined)
 
   return (
-    <Grid container spacing={2} sx={{ p: '32px' }}>
-      <Grid item xs={12}>
-        <Typography
-          variant='h4'
-          component='h1'
-          sx={{ fontFamily: 'Orelega One' }}
-          children="autoRIA Analyser"
-        />
+    <>
+      <TopBar />
+      <Grid container spacing={2} sx={{ p: '32px' }}>
+        <Grid item md={12}>
+          <Filters
+            filters={filters}
+            setFilters={setFilters}
+            compareGearboxes={comapreGearboxes}
+            setCompareGearboxes={setCompareGearboxes}
+          />
+        </Grid>
+
+        <Routes>
+          <Route path="/graphs" element={<Graphs filters={filters} comapreGearboxes={comapreGearboxes} />} />
+          <Route path="/autoselect" element={<h2>Nothing here yet</h2>} />
+          <Route path="*" element={<Navigate to="graphs" />} />
+        </Routes>
+
+        <Grid item md={12}>
+          <Info />
+        </Grid>
       </Grid>
-      <Grid item md={6}>
-        <Filters
-          filters={filters}
-          setFilters={setFilters}
-          compareGearboxes={comapreGearboxes}
-          setCompareGearboxes={setCompareGearboxes}
-        />
-      </Grid>
-      <Grid item xs={12}>
-        <ByYearGraph filters={filters} compareGearboxes={comapreGearboxes} />
-      </Grid>
-      <Grid item xs={12}>
-        <ByRegionGraph filters={filters} compareGearboxes={comapreGearboxes} />
-      </Grid>
-      <Grid item xs={12}>
-        <ByBrandGraph
-          filters={filters}
-          compareGearboxes={comapreGearboxes}
-          setActiveBrandId={setActiveBrandId}
-        />
-      </Grid>
-      <Grid item xs={12}>
-        <ByModel
-          filters={filters}
-          compareGearboxes={comapreGearboxes}
-          activeBrandId={activeBrandId}
-        />
-      </Grid>
-      <Grid item md={12}>
-        <Info />
-      </Grid>
-    </Grid>
+    </>
   );
 }
 
