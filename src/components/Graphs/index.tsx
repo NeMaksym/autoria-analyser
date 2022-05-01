@@ -17,7 +17,7 @@ export default function ({ filters, comapreGearboxes }: Params): JSX.Element {
     const [activeBrandId, setActiveBrandId] = useState<string | undefined>(undefined)
 
     return (
-        <>
+        <Grid container spacing={2}>
             <Grid item xs={12}>
                 <ByYearGraph filters={filters} compareGearboxes={comapreGearboxes} />
             </Grid>
@@ -38,6 +38,6 @@ export default function ({ filters, comapreGearboxes }: Params): JSX.Element {
                     activeBrandId={activeBrandId}
                 />
             </Grid>
-        </>
+        </Grid>
     )
 }

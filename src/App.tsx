@@ -21,7 +21,7 @@ function App() {
       <TopBar />
 
       <Grid container spacing={2} sx={{ p: '32px' }}>
-        <Grid item md={12}>
+        <Grid item xs={12}>
           <Filters
             filters={filters}
             setFilters={setFilters}
@@ -30,11 +30,13 @@ function App() {
           />
         </Grid>
 
-        <Routes>
-          <Route path="/graphs" element={<Graphs filters={filters} comapreGearboxes={comapreGearboxes} />} />
-          <Route path="/autoselect" element={<h2>Nothing here yet</h2>} />
-          <Route path="*" element={<Navigate to="graphs" />} />
-        </Routes>
+        <Grid item xs={12}>
+          <Routes>
+            <Route path="/graphs" element={<Graphs filters={filters} comapreGearboxes={comapreGearboxes} />} />
+            <Route path="/autoselect" element={<h2>Nothing here yet</h2>} />
+            <Route path="*" element={<Navigate to="graphs" />} />
+          </Routes>
+        </Grid>
 
         <Grid item md={12}>
           <Info />
