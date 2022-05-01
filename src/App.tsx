@@ -19,6 +19,7 @@ function App() {
   return (
     <>
       <TopBar />
+
       <Grid container spacing={2} sx={{ p: '32px' }}>
         <Grid item md={12}>
           <Filters
