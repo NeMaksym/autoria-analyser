@@ -69,7 +69,7 @@ const Filters = ({ formik, compareGearboxes, setCompareGearboxes }) => {
                             onChange={() => setCompareGearboxes(!compareGearboxes)}
                             label={
                                 <>
-                                    Показати розподілення АКПП до МКПП
+                                    Показати співвідношення механіки та автомату
                                     <Tooltip
                                         disableFocusListener
                                         disableTouchListener
