@@ -37,9 +37,11 @@ export interface ModelDataOrigin {
 }
 
 export interface ModelData {
-    name: string,
-    id: number,
-    count?: number,
+    name: string
+    id: number
+    count: number
+    countA?: number
+    countM?: number
 }
 
 export interface BrandDataOrigin {

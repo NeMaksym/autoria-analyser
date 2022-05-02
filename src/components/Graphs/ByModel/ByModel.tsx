@@ -3,7 +3,7 @@ import { Bar } from 'react-chartjs-2';
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js';
 
 import Search from 'classes/Search';
-import { ModelDataOrigin } from 'types/searchTypes';
+import { ModelData } from 'types/searchTypes';
 import SearchParams from 'classes/SearchParams';
 import { FilterValues } from 'types/filterTypes';
 import ErrorMsg from 'components/ErrorMsg/ErrorMsg';
@@ -27,9 +27,9 @@ interface Props {
 }
 
 const ByBrandGraph = ({ filters, compareGearboxes, activeBrandId }: Props) => {
-    const [data, setData] = useState<ModelDataOrigin[]>([])
-    const [isError, setIsError] = useState(false)
-    const [isPending, setIsPending] = useState(false)
+    const [data, setData] = useState<ModelData[]>([])
+    const [isError, setIsError] = useState<boolean>(false)
+    const [isPending, setIsPending] = useState<boolean>(false)
 
     useEffect(() => {
         let isCanceled = false
@@ -41,7 +41,7 @@ const ByBrandGraph = ({ filters, compareGearboxes, activeBrandId }: Props) => {
             setIsPending(true)
 
             new Search()
-                .byModel(searchParams, activeBrandId.toString())
+                .byModel(searchParams, activeBrandId)
                 .then(data => {
                     if (!isCanceled) setData(data)
                 })

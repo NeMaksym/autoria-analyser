@@ -1,4 +1,4 @@
-import { ModelDataOrigin } from "types/searchTypes";
+import { ModelData } from "types/searchTypes";
 import GRAPH_PALETTE from 'consts/graphPalette';
 
 interface Dataset {
@@ -13,7 +13,7 @@ interface BarData {
 }
 
 type GetGraphData = (
-    data: ModelDataOrigin[],
+    data: ModelData[],
     compareGearboxes: boolean
 ) => BarData;
 
@@ -43,27 +43,21 @@ const getGraphData: GetGraphData = (data, compareGearboxes) => {
         })
     }
 
-    data = data
-        .sort((a, b) => {
-            const totalA = a.countFilterA + a.countFilterM
-            const totalB = b.countFilterA + b.countFilterM
+    data
+        .sort((a, b) => a.count - b.count)
+        .filter((_item, i) => i < 25)
+        .forEach(({ name, count, countA, countM }) => {
+            if (!countA || !countM) return
 
-            return totalA - totalB
+            graphData.labels.push(name)
+
+            if (compareGearboxes) {
+                graphData.datasets[0].data.push(countA)
+                graphData.datasets[1].data.push(countM)
+            } else {
+                graphData.datasets[0].data.push(count)
+            }
         })
-        .filter(model => !model.isGroup)
-
-    if (data.length > 25) data = data.slice(data.length - 25)
-
-    data.forEach(({ name, countFilterA, countFilterM }) => {
-        graphData.labels.push(name)
-
-        if (compareGearboxes) {
-            graphData.datasets[0].data.push(countFilterA)
-            graphData.datasets[1].data.push(countFilterM)
-        } else {
-            graphData.datasets[0].data.push(countFilterA + countFilterM)
-        }
-    })
 
     return graphData
 }

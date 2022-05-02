@@ -59,6 +59,7 @@ export default class TopBrands {
             .map(model => ({
                 name: model.name,
                 id: model.value,
+                count: model.count,
             }))
     }
 }
