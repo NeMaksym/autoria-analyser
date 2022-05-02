@@ -11,12 +11,12 @@ export interface YearData {
     countA?: number
 }
 
-export interface ByRegionRes {
-    [regionId: string]: {
-        countBase: number
-        countFilterA: number
-        countFilterM: number
-    }
+export interface RegionData {
+    id: number,
+    name: string,
+    count: number,
+    countM?: number,
+    countA?: number,
 }
 
 export interface ByBrandRes {

@@ -1,5 +1,4 @@
-import REGIONS from "consts/regions";
-import { ByRegionRes } from "types/searchTypes";
+import { RegionData } from "types/searchTypes";
 import GRAPH_PALETTE from 'consts/graphPalette';
 
 interface Dataset {
@@ -14,7 +13,7 @@ interface BarData {
 }
 
 type GetGraphData = (
-    data: ByRegionRes,
+    data: RegionData[],
     compareGearboxes: boolean,
 ) => BarData
 
@@ -57,20 +56,20 @@ const getGraphData: GetGraphData = (data, compareGearboxes) => {
         ].forEach(item => graphData.datasets.push(item))
     }
 
-    Object.entries(data)
-        .sort((a, b) => a[1].countBase - b[1].countBase)
-        .forEach(regionEntrie => {
-            const [regionId, { countBase, countFilterA, countFilterM }] = regionEntrie
+    data
+        .sort((a, b) => a.count - b.count)
+        .forEach(({ name, count, countA, countM }) => {
+            if (!countA || !countM) return
 
-            graphData.labels.push(REGIONS[regionId])
+            graphData.labels.push(name)
 
             if (compareGearboxes) {
-                graphData.datasets[0].data.push(countFilterA)
-                graphData.datasets[1].data.push(countFilterM)
-                graphData.datasets[2].data.push(countBase - countFilterA - countFilterM)
+                graphData.datasets[0].data.push(countA)
+                graphData.datasets[1].data.push(countM)
+                graphData.datasets[2].data.push(count - countA - countM)
             } else {
-                graphData.datasets[0].data.push(countFilterA + countFilterM)
-                graphData.datasets[1].data.push(countBase - countFilterA - countFilterM)
+                graphData.datasets[0].data.push(countA + countM)
+                graphData.datasets[1].data.push(count - countA - countM)
             }
         })
 

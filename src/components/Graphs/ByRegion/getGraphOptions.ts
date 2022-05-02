@@ -1,5 +1,5 @@
 import REGIONS from "consts/regions";
-import { ByRegionRes } from "types/searchTypes";
+import { RegionData } from "types/searchTypes";
 
 interface LabelProps {
     dataset: {
@@ -9,7 +9,7 @@ interface LabelProps {
     formattedValue: string
 }
 
-const getGraphOptions = (data: ByRegionRes) => {
+const getGraphOptions = (data: RegionData[]) => {
     return {
         plugins: {
             title: {
@@ -22,7 +22,7 @@ const getGraphOptions = (data: ByRegionRes) => {
                         const regionId = Object.keys(REGIONS).find(regionId => REGIONS[regionId] === label)
 
                         if (dataset.label === 'Загалом на ринку' && regionId) {
-                            return data[regionId].countBase
+                            return data.find(regionData => regionData.id === Number(regionId))?.count
                         }
 
                         return formattedValue

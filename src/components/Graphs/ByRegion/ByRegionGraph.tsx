@@ -3,12 +3,13 @@ import { Bar } from 'react-chartjs-2';
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js';
 
 import Search from 'classes/Search';
+import { RegionData } from 'types/searchTypes';
 import SearchParams from 'classes/SearchParams';
 import { FilterValues } from 'types/filterTypes';
-import getGraphData from 'components/Graphs/ByRegion/getGraphData';
-import getGraphOptions from 'components/Graphs/ByRegion/getGraphOptions';
 import ErrorMsg from 'components/ErrorMsg/ErrorMsg';
 import PendingMsg from 'components/PendingMsg/PendingMsg';
+import getGraphData from 'components/Graphs/ByRegion/getGraphData';
+import getGraphOptions from 'components/Graphs/ByRegion/getGraphOptions';
 
 ChartJS.register(
     CategoryScale,
@@ -25,9 +26,9 @@ interface Props {
 }
 
 const ByRegionGraph = ({ filters, compareGearboxes }: Props) => {
-    const [data, setData] = useState({})
-    const [isError, setIsError] = useState(false)
-    const [isPending, setIsPending] = useState(false)
+    const [data, setData] = useState<RegionData[]>([])
+    const [isError, setIsError] = useState<boolean>(false)
+    const [isPending, setIsPending] = useState<boolean>(false)
 
     useEffect(() => {
         let isCanceled = false

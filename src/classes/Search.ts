@@ -8,7 +8,7 @@ import getTopBrandById from "utils/getTopBrandById";
 import {
     Gearbox,
     YearData,
-    ByRegionRes,
+    RegionData,
     ByBrandRes,
     ModelDataOrigin,
     BrandData,
@@ -39,55 +39,25 @@ class Search {
         }))
     }
 
-    async byRegion(filterParams: SearchParams): Promise<ByRegionRes> {
+    async byRegion(filterParams: SearchParams): Promise<RegionData[]> {
+        // #1. Count cars by region in general
         const baseParams = new SearchParams()
+        const regionsBase = await this.countRegions(baseParams)
 
-        const res: ByRegionRes = {}
-        const requests: Promise<void>[] = []
+        // #2. Count mechanic gearbox cars, based on filters 
+        filterParams.setGearbox(Gearbox.mechanic)
+        const regionsM = await this.countRegions(filterParams)
 
-        Object.keys(REGIONS).forEach(regionId => {
-            res[regionId] = {
-                countBase: 0,
-                countFilterA: 0,
-                countFilterM: 0,
-            }
+        // #3. Count automat gearbox cars, based on filters
+        filterParams.setGearbox(Gearbox.auto)
+        const regionsA = await this.countRegions(filterParams)
 
-            baseParams.setRegion(regionId)
-
-            requests.push(
-                axios
-                    .get(URL.search, { params: baseParams.values })
-                    .then(({ data }) => {
-                        res[regionId].countBase = data.result.search_result_common.count
-                    })
-            )
-
-            filterParams
-                .setRegion(regionId)
-                .setGearbox(Gearbox.auto)
-
-            requests.push(
-                axios
-                    .get(URL.search, { params: filterParams.values })
-                    .then(({ data }) => {
-                        res[regionId].countFilterA = data.result.search_result_common.count
-                    })
-            )
-
-            filterParams.setGearbox(Gearbox.mechanic)
-
-            requests.push(
-                axios
-                    .get(URL.search, { params: filterParams.values })
-                    .then(({ data }) => {
-                        res[regionId].countFilterM = data.result.search_result_common.count
-                    })
-            )
-        })
-
-        await axios.all(requests)
-
-        return res
+        // #4. Combine results
+        return regionsBase.map(regionBase => ({
+            ...regionBase,
+            countA: regionsA.find(regionA => regionA.id === regionBase.id)?.count || 0,
+            countM: regionsM.find(regionM => regionM.id === regionBase.id)?.count || 0,
+        }))
     }
 
     async byBrand(filterParams: SearchParams): Promise<ByBrandRes> {
@@ -223,6 +193,7 @@ class Search {
         return carOptions
     }
 
+    /** UTILS */
     private async countYears(searchParams: SearchParams, startFrom?: number): Promise<YearData[]> {
         const requests = [];
         const years: YearData[] = []
@@ -232,7 +203,12 @@ class Search {
 
             const request = axios
                 .get(URL.search, { params: searchParams.values })
-                .then(({ data }) => years.push({ year, count: data.result.search_result_common.count }))
+                .then(({ data }) => {
+                    years.push({
+                        year,
+                        count: data.result.search_result_common.count
+                    })
+                })
 
             requests.push(request)
         }
@@ -240,6 +216,31 @@ class Search {
         await axios.all(requests)
 
         return years
+    }
+
+    private async countRegions(searchParams: SearchParams): Promise<RegionData[]> {
+        const requests: Promise<void>[] = []
+        const regions: RegionData[] = []
+
+        Object.keys(REGIONS).forEach(regionId => {
+            searchParams.setRegion(regionId)
+
+            const request = axios
+                .get(URL.search, { params: searchParams.values })
+                .then(({ data }) => {
+                    regions.push({
+                        id: Number(regionId),
+                        name: REGIONS[regionId],
+                        count: data.result.search_result_common.count
+                    })
+                })
+
+            requests.push(request)
+        })
+
+        await axios.all(requests)
+
+        return regions
     }
 
     private async countTopBrands(searchParams: SearchParams): Promise<BrandData[]> {
