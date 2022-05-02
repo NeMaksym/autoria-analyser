@@ -47,7 +47,8 @@ const getGraphData: GetGraphData = (data, compareGearboxes) => {
         .sort((a, b) => a.count - b.count)
         .filter((_item, i) => i < 25)
         .forEach(({ name, count, countA, countM }) => {
-            if (!countA || !countM) return
+            if (typeof countA === "undefined") return
+            if (typeof countM === "undefined") return
 
             graphData.labels.push(name)
 
