@@ -29,7 +29,7 @@ const YearSection = ({ year, models }: Props) => {
                 models
                     .sort((a, b) => b.count - a.count)
                     .map(({ brandName, modelName, count }) => (
-                        <ListItem>
+                        <ListItem key={`${brandName}${modelName}${count}`}>
                             <ListItemIcon>
                                 <DirectionsCarIcon />
                             </ListItemIcon>
