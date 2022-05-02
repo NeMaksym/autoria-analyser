@@ -1,4 +1,4 @@
-import { ModelData } from "types/searchTypes";
+import { ModelDataOrigin } from "types/searchTypes";
 import GRAPH_PALETTE from 'consts/graphPalette';
 
 interface Dataset {
@@ -13,7 +13,7 @@ interface BarData {
 }
 
 type GetGraphData = (
-    data: ModelData[],
+    data: ModelDataOrigin[],
     compareGearboxes: boolean
 ) => BarData;
 

@@ -3,7 +3,7 @@ import { Bar } from 'react-chartjs-2';
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js';
 
 import Search from 'classes/Search';
-import { ModelData } from 'types/searchTypes';
+import { ModelDataOrigin } from 'types/searchTypes';
 import SearchParams from 'classes/SearchParams';
 import { FilterValues } from 'types/filterTypes';
 import ErrorMsg from 'components/ErrorMsg/ErrorMsg';
@@ -27,7 +27,7 @@ interface Props {
 }
 
 const ByBrandGraph = ({ filters, compareGearboxes, activeBrandId }: Props) => {
-    const [data, setData] = useState<ModelData[]>([])
+    const [data, setData] = useState<ModelDataOrigin[]>([])
     const [isError, setIsError] = useState(false)
     const [isPending, setIsPending] = useState(false)
 

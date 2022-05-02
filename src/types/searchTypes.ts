@@ -28,7 +28,14 @@ export interface ByBrandRes {
     }
 }
 
-export interface ModelData {
+export interface CarOption {
+    year: number
+    brandName: string
+    modelName: string
+    count: number
+}
+
+export interface ModelDataOrigin {
     name: string
     value: number
     count: number
@@ -36,4 +43,23 @@ export interface ModelData {
     parentId: number
     countFilterA: number
     countFilterM: number
+}
+
+export interface ModelData {
+    name: string,
+    id: number,
+    count?: number,
+}
+
+export interface BrandDataOrigin {
+    count: number
+    name: string
+    value: number
+    country: number
+}
+export interface BrandData {
+    name: string,
+    id: number,
+    count: number,
+    models?: ModelData[]
 }
