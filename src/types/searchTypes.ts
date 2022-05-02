@@ -19,14 +19,6 @@ export interface RegionData {
     countA?: number,
 }
 
-export interface ByBrandRes {
-    [brand: string]: {
-        name: string
-        countFilterA: number
-        countFilterM: number
-    }
-}
-
 export interface CarOption {
     year: number
     brandName: string
@@ -57,8 +49,10 @@ export interface BrandDataOrigin {
     country: number
 }
 export interface BrandData {
-    name: string,
-    id: number,
-    count: number,
+    name: string
+    id: number
+    count: number
+    countA?: number
+    countM?: number
     models?: ModelData[]
 }

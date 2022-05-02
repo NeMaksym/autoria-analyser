@@ -9,7 +9,6 @@ import {
     Gearbox,
     YearData,
     RegionData,
-    ByBrandRes,
     ModelDataOrigin,
     BrandData,
     CarOption,
@@ -60,54 +59,26 @@ class Search {
         }))
     }
 
-    async byBrand(filterParams: SearchParams): Promise<ByBrandRes> {
-        const brandIDs: number[] = []
-        const res: ByBrandRes = {}
+    async byBrand(filterParams: SearchParams): Promise<BrandData[]> {
+        // #1. Count mechanic gearbox cars, based on filters 
+        filterParams.setGearbox(Gearbox.mechanic)
+        const brandsM = await this.countTopBrands(filterParams)
 
-        await axios
-            .get(URL.brands)
-            .then(({ data }) => {
-                data.forEach(({ value: brandId }: { value: number }) => {
-                    brandIDs.push(brandId)
-                    res[brandId] = {
-                        name: '',
-                        countFilterA: 0,
-                        countFilterM: 0,
-                    }
-                })
-            })
+        // #2. Count automat gearbox cars, based on filters 
+        filterParams.setGearbox(Gearbox.auto)
+        const brandsA = await this.countTopBrands(filterParams)
 
-        const requests: Promise<void>[] = []
+        // #3. Combine results
+        return brandsM.map((brandM) => {
+            const countA = brandsA.find(brandA => brandA.id === brandM.id)?.count || 0
 
-
-        brandIDs.forEach(brandId => {
-            filterParams
-                .setBrand(brandId)
-                .setGearbox(Gearbox.auto)
-
-            requests.push(
-                axios
-                    .get(URL.search, { params: filterParams.values })
-                    .then(({ data }) => {
-                        res[brandId].countFilterA = data.result.search_result_common.count
-                        res[brandId].name = data.result.active_marka.name
-                    })
-            )
-
-            filterParams.setGearbox(Gearbox.mechanic)
-
-            requests.push(
-                axios
-                    .get(URL.search, { params: filterParams.values })
-                    .then(({ data }) => {
-                        res[brandId].countFilterM = data.result.search_result_common.count
-                    })
-            )
+            return {
+                ...brandM,
+                count: brandM.count + countA,
+                countM: brandM.count,
+                countA,
+            }
         })
-
-        await axios.all(requests)
-
-        return res
     }
 
     async byModel(filterParams: SearchParams, brandId: string): Promise<ModelDataOrigin[]> {

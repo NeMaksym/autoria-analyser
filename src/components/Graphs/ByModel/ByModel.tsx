@@ -23,7 +23,7 @@ ChartJS.register(
 interface Props {
     filters: FilterValues
     compareGearboxes: boolean,
-    activeBrandId: string | undefined,
+    activeBrandId: number | undefined,
 }
 
 const ByBrandGraph = ({ filters, compareGearboxes, activeBrandId }: Props) => {
@@ -41,7 +41,7 @@ const ByBrandGraph = ({ filters, compareGearboxes, activeBrandId }: Props) => {
             setIsPending(true)
 
             new Search()
-                .byModel(searchParams, activeBrandId)
+                .byModel(searchParams, activeBrandId.toString())
                 .then(data => {
                     if (!isCanceled) setData(data)
                 })

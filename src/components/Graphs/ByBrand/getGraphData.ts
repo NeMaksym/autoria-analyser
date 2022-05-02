@@ -1,4 +1,4 @@
-import { ByBrandRes } from "types/searchTypes";
+import { BrandData } from "types/searchTypes";
 import GRAPH_PALETTE from 'consts/graphPalette';
 
 interface Dataset {
@@ -13,7 +13,7 @@ interface BarData {
 }
 
 type GetGraphData = (
-    data: ByBrandRes,
+    data: BrandData[],
     compareGearboxes: boolean
 ) => BarData;
 
@@ -43,24 +43,19 @@ const getGraphData: GetGraphData = (data, compareGearboxes) => {
         })
     }
 
-    Object.entries(data)
-        .sort((a, b) => {
-            const totalA = a[1].countFilterA + a[1].countFilterM
-            const totalB = b[1].countFilterA + b[1].countFilterM
-
-            return totalA - totalB
-        })
-        .slice(Object.keys(data).length - 25)
-        .forEach(brandEntrie => {
-            const { name, countFilterA, countFilterM } = brandEntrie[1]
+    data
+        .sort((a, b) => a.count - b.count)
+        .slice(data.length - 25)
+        .forEach(({ name, countA, countM }) => {
+            if (!countA || !countM) return
 
             graphData.labels.push(name)
 
             if (compareGearboxes) {
-                graphData.datasets[0].data.push(countFilterA)
-                graphData.datasets[1].data.push(countFilterM)
+                graphData.datasets[0].data.push(countA)
+                graphData.datasets[1].data.push(countM)
             } else {
-                graphData.datasets[0].data.push(countFilterA + countFilterM)
+                graphData.datasets[0].data.push(countA + countM)
             }
         })
 

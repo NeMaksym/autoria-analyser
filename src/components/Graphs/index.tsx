@@ -14,7 +14,7 @@ interface Params {
 
 // eslint-disable-next-line import/no-anonymous-default-export
 export default function ({ filters, comapreGearboxes }: Params): JSX.Element {
-    const [activeBrandId, setActiveBrandId] = useState<string | undefined>(undefined)
+    const [activeBrandId, setActiveBrandId] = useState<number | undefined>(undefined)
 
     return (
         <Grid container spacing={2}>

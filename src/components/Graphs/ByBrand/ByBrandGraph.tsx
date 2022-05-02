@@ -3,13 +3,13 @@ import { Chart, getElementAtEvent } from 'react-chartjs-2';
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js';
 
 import Search from 'classes/Search';
-import { ByBrandRes } from 'types/searchTypes';
+import { BrandData } from 'types/searchTypes';
 import SearchParams from 'classes/SearchParams';
 import { FilterValues } from 'types/filterTypes';
+import ErrorMsg from 'components/ErrorMsg/ErrorMsg';
+import PendingMsg from 'components/PendingMsg/PendingMsg';
 import getGraphData from 'components/Graphs/ByBrand/getGraphData';
 import getGraphOptions from 'components/Graphs/ByBrand/getGraphOptions';
-import PendingMsg from 'components/PendingMsg/PendingMsg';
-import ErrorMsg from 'components/ErrorMsg/ErrorMsg';
 
 ChartJS.register(
     CategoryScale,
@@ -23,13 +23,13 @@ ChartJS.register(
 interface Props {
     filters: FilterValues
     compareGearboxes: boolean
-    setActiveBrandId: Dispatch<SetStateAction<string | undefined>>
+    setActiveBrandId: Dispatch<SetStateAction<number | undefined>>
 }
 
 const ByBrandGraph = ({ filters, compareGearboxes, setActiveBrandId }: Props) => {
-    const [data, setData] = useState<ByBrandRes>({})
-    const [isError, setIsError] = useState(false)
-    const [isPending, setIsPending] = useState(false)
+    const [data, setData] = useState<BrandData[]>([])
+    const [isError, setIsError] = useState<boolean>(false)
+    const [isPending, setIsPending] = useState<boolean>(false)
 
     const chartRef = useRef<ChartJS>(null);
 
@@ -75,7 +75,7 @@ const ByBrandGraph = ({ filters, compareGearboxes, setActiveBrandId }: Props) =>
                 const { index } = getElementAtEvent(chartRef.current, event)[0];
                 const label = graphData.labels[index];
 
-                const id = Object.keys(data).find(brandId => data[brandId].name === label)
+                const id = data.find(({ name }) => name === label)?.id
 
                 setActiveBrandId(id)
             }}
