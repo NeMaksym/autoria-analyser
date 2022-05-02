@@ -1,4 +1,4 @@
-import { ByYearRes } from "types/searchTypes";
+import { YearData } from "types/searchTypes";
 
 interface LabelProps {
     dataset: {
@@ -8,7 +8,7 @@ interface LabelProps {
     formattedValue: string
 }
 
-const getGraphOptions = (data: ByYearRes) => {
+const getGraphOptions = (data: YearData[]) => {
     return {
         plugins: {
             title: {
@@ -19,7 +19,7 @@ const getGraphOptions = (data: ByYearRes) => {
                 callbacks: {
                     label: ({ dataset, label, formattedValue }: LabelProps) => {
                         if (dataset.label === 'Загалом на ринку') {
-                            return data[label].countBase
+                            return data.find(yearData => yearData.year === Number(label))?.count
                         }
 
                         return formattedValue

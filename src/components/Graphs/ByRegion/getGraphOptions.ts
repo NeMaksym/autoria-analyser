@@ -1,5 +1,5 @@
 import REGIONS from "consts/regions";
-import { ByYearRes } from "types/searchTypes";
+import { ByRegionRes } from "types/searchTypes";
 
 interface LabelProps {
     dataset: {
@@ -9,7 +9,7 @@ interface LabelProps {
     formattedValue: string
 }
 
-const getGraphOptions = (data: ByYearRes) => {
+const getGraphOptions = (data: ByRegionRes) => {
     return {
         plugins: {
             title: {

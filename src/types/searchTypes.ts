@@ -4,12 +4,11 @@ export enum Gearbox {
     none = 'General',
 }
 
-export interface ByYearRes {
-    [year: string]: {
-        countBase: number
-        countFilterA: number
-        countFilterM: number
-    }
+export interface YearData {
+    year: number
+    count: number
+    countM?: number
+    countA?: number
 }
 
 export interface ByRegionRes {

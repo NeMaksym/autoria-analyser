@@ -1,4 +1,4 @@
-import { ByYearRes } from "types/searchTypes";
+import { YearData } from "types/searchTypes";
 import GRAPH_PALETTE from 'consts/graphPalette';
 
 interface Dataset {
@@ -8,12 +8,12 @@ interface Dataset {
 }
 
 interface BarData {
-    labels: string[]
+    labels: number[]
     datasets: Dataset[]
 }
 
 type GetGraphData = (
-    data: ByYearRes,
+    data: YearData[],
     compareGearboxes: boolean
 ) => BarData
 
@@ -56,20 +56,22 @@ const getGraphData: GetGraphData = (data, compareGearboxes) => {
         ].forEach(item => graphData.datasets.push(item))
     }
 
-    Object.entries(data).forEach(yearEntrie => {
-        const [year, { countBase, countFilterA, countFilterM }] = yearEntrie
+    data
+        .sort((a, b) => a.year - b.year)
+        .forEach(({ year, count, countA, countM }) => {
+            if (!countA || !countM) return
 
-        graphData.labels?.push(year)
+            graphData.labels?.push(year)
 
-        if (compareGearboxes) {
-            graphData.datasets[0].data.push(countFilterA)
-            graphData.datasets[1].data.push(countFilterM)
-            graphData.datasets[2].data.push(countBase - countFilterA - countFilterM)
-        } else {
-            graphData.datasets[0].data.push(countFilterA + countFilterM)
-            graphData.datasets[1].data.push(countBase - countFilterA - countFilterM)
-        }
-    })
+            if (compareGearboxes) {
+                graphData.datasets[0].data.push(countA)
+                graphData.datasets[1].data.push(countM)
+                graphData.datasets[2].data.push(count - countA - countM)
+            } else {
+                graphData.datasets[0].data.push(countA + countM)
+                graphData.datasets[1].data.push(count - countA - countM)
+            }
+        })
 
     return graphData
 }

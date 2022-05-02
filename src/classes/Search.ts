@@ -7,67 +7,36 @@ import SearchParams from "classes/SearchParams";
 import getTopBrandById from "utils/getTopBrandById";
 import {
     Gearbox,
-    ByYearRes,
+    YearData,
     ByRegionRes,
     ByBrandRes,
     ModelDataOrigin,
     BrandData,
-    CarOption
+    CarOption,
 } from "types/searchTypes";
+
 class Search {
-    async byYear(filterParams: SearchParams): Promise<ByYearRes> {
-        const requests: Promise<void>[] = []
+    async byYear(filterParams: SearchParams): Promise<YearData[]> {
+        const yearFrom = filterParams.values["s_yers[0]"]
 
+        // #1. Count cars by years in general
         const baseParams = new SearchParams()
-        const filterYearFrom = filterParams.values["s_yers[0]"]
+        const yearsBase = await this.countYears(baseParams)
 
-        const res: ByYearRes = {}
+        // #2. Count mechanic gearbox cars, based on filters 
+        filterParams.setGearbox(Gearbox.mechanic)
+        const yearsM = await this.countYears(filterParams, yearFrom)
 
-        for (let year = 2000; year < 2023; year++) {
-            res[year] = {
-                countBase: 0,
-                countFilterA: 0,
-                countFilterM: 0,
-            }
+        // #3. Count automat gearbox cars, based on filters
+        filterParams.setGearbox(Gearbox.auto)
+        const yearsA = await this.countYears(filterParams, yearFrom)
 
-            baseParams.setYear(year, year);
-
-            requests.push(
-                axios
-                    .get(URL.search, { params: baseParams.values })
-                    .then(({ data }) => {
-                        res[year].countBase = data.result.search_result_common.count
-                    })
-            )
-
-            if (!filterYearFrom || year >= filterYearFrom) {
-                filterParams
-                    .setGearbox(Gearbox.auto)
-                    .setYear(year, year)
-
-                requests.push(
-                    axios
-                        .get(URL.search, { params: filterParams.values })
-                        .then(({ data }) => {
-                            res[year].countFilterA = data.result.search_result_common.count
-                        })
-                )
-
-                filterParams.setGearbox(Gearbox.mechanic)
-
-                requests.push(
-                    axios
-                        .get(URL.search, { params: filterParams.values })
-                        .then(({ data }) => {
-                            res[year].countFilterM = data.result.search_result_common.count
-                        })
-                )
-            }
-        }
-
-        await axios.all(requests);
-
-        return res;
+        // #4. Combine results
+        return yearsBase.map(yearBase => ({
+            ...yearBase,
+            countA: yearsA.find(yearA => yearA.year === yearBase.year)?.count || 0,
+            countM: yearsM.find(yearM => yearM.year === yearBase.year)?.count || 0,
+        }))
     }
 
     async byRegion(filterParams: SearchParams): Promise<ByRegionRes> {
@@ -254,11 +223,11 @@ class Search {
         return carOptions
     }
 
-    private async countYears(searchParams: SearchParams) {
+    private async countYears(searchParams: SearchParams, startFrom?: number): Promise<YearData[]> {
         const requests = [];
-        const years: { year: number, count: number }[] = []
+        const years: YearData[] = []
 
-        for (let year = 2000; year < 2023; year++) {
+        for (let year = startFrom || 2000; year < 2023; year++) {
             searchParams.setYear(year, year)
 
             const request = axios
