@@ -8,15 +8,22 @@ import {
     ModelDataOrigin
 } from "types/searchTypes"
 
-/** Minimum number of cars to consider brand as a TOP_BRAND
+/** Minimum number of ads to consider brand as a TOP_BRAND
  * 
  * Filters 3/4 of brands that do not or almost do not persists on the market.
- * It saves a lot of irrelevant requests
+ * It saves a lot of irrelevant requests.
  */
 const MIN_TOP_BRAND_COUNT = 100;
 
+/** Minimum number of ads to consider model as a TOP_MODEL
+ * 
+ * Filters a 3/4 of models of TOP_BRANDS.
+ * It saves a lot of irrelevant requests.
+ */
+const MIN_MODEL_COUNT = 30;
+
 export default class TopBrands {
-    private async get(): Promise<BrandData[]> {
+    async get(): Promise<BrandData[]> {
         const { data }: { data: BrandDataOrigin[] } = await axios.get(URL.brands)
 
         const brands: BrandData[] = data
@@ -36,19 +43,22 @@ export default class TopBrands {
             brands[i].models = models
         }
 
-        return brands
+        return brands.filter(brand => brand.models?.length)
     }
 
     private async getModels(brandId: string): Promise<ModelData[]> {
         const { data: models }: { data: ModelDataOrigin[] } = await axios.get(URL.models.replace('{brandId}', brandId))
 
         return models
-            .filter(model => !model.isGroup)
+            .filter(({ isGroup, count }) => {
+                if (count < MIN_MODEL_COUNT) return false
+                if (isGroup) return false
+
+                return true
+            })
             .map(model => ({
                 name: model.name,
                 id: model.value,
             }))
     }
 }
-
-// new TopBrands().get()
