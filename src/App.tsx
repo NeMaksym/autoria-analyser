@@ -5,6 +5,7 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import Graphs from 'components/Graphs';
 import Info from 'components/Info/Info';
 import Filters from 'components/Filters';
+import CarPicker from 'components/CarPicker';
 import TopBar from 'components/TopBar/TopBar';
 import { FilterValues } from 'types/filterTypes';
 
@@ -20,7 +21,7 @@ function App() {
     <>
       <TopBar />
 
-      <Grid container spacing={2} sx={{ p: '32px' }}>
+      <Grid container spacing={4} sx={{ p: '32px' }}>
         <Grid item xs={12}>
           <Filters
             filters={filters}
@@ -33,7 +34,7 @@ function App() {
         <Grid item xs={12}>
           <Routes>
             <Route path="/graphs" element={<Graphs filters={filters} comapreGearboxes={comapreGearboxes} />} />
-            <Route path="/autoselect" element={<h2>Nothing here yet</h2>} />
+            <Route path="/carpicker" element={<CarPicker filters={filters} />} />
             <Route path="*" element={<Navigate to="graphs" />} />
           </Routes>
         </Grid>

@@ -3,7 +3,7 @@ import { Typography, AppBar, Container, Toolbar, MenuItem } from '@mui/material'
 
 const pages = {
     graphs: 'Графіки',
-    autoselect: 'Автопідбір',
+    carpicker: 'Автопідбір',
 }
 
 const TopBar = () => (
