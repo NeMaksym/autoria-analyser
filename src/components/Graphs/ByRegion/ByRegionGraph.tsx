@@ -30,6 +30,8 @@ const ByRegionGraph = ({ filters, compareGearboxes }: Props) => {
     const [isPending, setIsPending] = useState(false)
 
     useEffect(() => {
+        let isCanceled = false
+
         const searchParams = new SearchParams(filters)
 
         setIsError(false)
@@ -37,9 +39,17 @@ const ByRegionGraph = ({ filters, compareGearboxes }: Props) => {
 
         new Search()
             .byRegion(searchParams)
-            .then(data => setData(data))
-            .catch(() => setIsError(true))
-            .finally(() => setIsPending(false))
+            .then(data => {
+                if (!isCanceled) setData(data)
+            })
+            .catch(() => {
+                if (!isCanceled) setIsError(true)
+            })
+            .finally(() => {
+                if (!isCanceled) setIsPending(false)
+            })
+
+        return () => { isCanceled = true }
     }, [filters])
 
     if (isError) return <ErrorMsg />

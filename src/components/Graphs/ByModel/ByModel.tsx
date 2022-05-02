@@ -32,6 +32,8 @@ const ByBrandGraph = ({ filters, compareGearboxes, activeBrandId }: Props) => {
     const [isPending, setIsPending] = useState(false)
 
     useEffect(() => {
+        let isCanceled = false
+
         if (activeBrandId) {
             const searchParams = new SearchParams(filters)
 
@@ -40,10 +42,18 @@ const ByBrandGraph = ({ filters, compareGearboxes, activeBrandId }: Props) => {
 
             new Search()
                 .byModel(searchParams, activeBrandId)
-                .then(data => setData(data))
-                .catch(() => setIsError(true))
-                .finally(() => setIsPending(false))
+                .then(data => {
+                    if (!isCanceled) setData(data)
+                })
+                .catch(() => {
+                    if (!isCanceled) setIsError(true)
+                })
+                .finally(() => {
+                    if (!isCanceled) setIsPending(false)
+                })
         }
+
+        return () => { isCanceled = true }
     }, [filters, activeBrandId])
 
     if (!activeBrandId) return <h2>Оберіть бренд авто натиснувши на стовпчик ☝️</h2>

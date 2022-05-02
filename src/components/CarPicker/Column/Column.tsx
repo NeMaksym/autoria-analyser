@@ -22,6 +22,8 @@ const Column = ({ filters, gearbox, title }: Props) => {
     const [isPending, setIsPending] = useState(false)
 
     useEffect(() => {
+        let isCancelled = false;
+
         const searchParams = new SearchParams(filters)
 
         setIsError(false)
@@ -30,11 +32,19 @@ const Column = ({ filters, gearbox, title }: Props) => {
         new Search()
             .carPicker(searchParams, gearbox)
             .then(data => {
-                let groupedData = groupBy(data, 'year')
-                setData(groupedData)
+                if (!isCancelled) {
+                    let groupedData = groupBy(data, 'year')
+                    setData(groupedData)
+                }
             })
-            .catch(() => setIsError(true))
-            .finally(() => setIsPending(false))
+            .catch(() => {
+                if (!isCancelled) setIsError(true)
+            })
+            .finally(() => {
+                if (!isCancelled) setIsPending(false)
+            })
+
+        return () => { isCancelled = true }
     }, [filters, gearbox])
 
     return (

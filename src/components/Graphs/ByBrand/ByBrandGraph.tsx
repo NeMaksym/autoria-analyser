@@ -34,6 +34,8 @@ const ByBrandGraph = ({ filters, compareGearboxes, setActiveBrandId }: Props) =>
     const chartRef = useRef<ChartJS>(null);
 
     useEffect(() => {
+        let isCanceled = false
+
         const searchParams = new SearchParams(filters)
 
         setIsError(false)
@@ -42,9 +44,17 @@ const ByBrandGraph = ({ filters, compareGearboxes, setActiveBrandId }: Props) =>
 
         new Search()
             .byBrand(searchParams)
-            .then(data => setData(data))
-            .catch(() => setIsError(true))
-            .finally(() => setIsPending(false))
+            .then(data => {
+                if (!isCanceled) setData(data)
+            })
+            .catch(() => {
+                if (!isCanceled) setIsError(true)
+            })
+            .finally(() => {
+                if (!isCanceled) setIsPending(false)
+            })
+
+        return () => { isCanceled = true }
     }, [filters, setActiveBrandId])
 
     if (isError) return <ErrorMsg />
