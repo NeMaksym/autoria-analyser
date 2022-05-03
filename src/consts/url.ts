@@ -1,4 +1,4 @@
-const BASE_URL = 'http://autoria-analyser-2mrll.ondigitalocean.app'
+const BASE_URL = 'https://autoria-analyser-2mrll.ondigitalocean.app'
 
 const URL = {
     search: `${BASE_URL}/demo/bu/searchPage/search/indexes/auto?`,
