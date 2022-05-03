@@ -1,4 +1,4 @@
-const BASE_URL = 'http://localhost:8000' || 'https://auto.ria.com'
+const BASE_URL = 'http://autoria-analyser-2mrll.ondigitalocean.app'
 
 const URL = {
     search: `${BASE_URL}/demo/bu/searchPage/search/indexes/auto?`,
