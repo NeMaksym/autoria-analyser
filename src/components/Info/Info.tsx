@@ -56,7 +56,7 @@ const Info = () => {
 
     return (
         <>
-            <Typography variant="h4" component="h2" gutterBottom sx={{ textAlign: 'center', mt: 2 }}>
+            <Typography id="qa" variant="h4" component="h2" gutterBottom sx={{ textAlign: 'center', mt: 2 }}>
                 Питання та Відповіді
             </Typography>
 

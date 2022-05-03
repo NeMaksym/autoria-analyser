@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { HashLink } from 'react-router-hash-link';
 import { Typography, AppBar, Container, Toolbar, MenuItem } from '@mui/material'
 
 const pages = {
@@ -28,6 +29,14 @@ const TopBar = () => (
                         </Link>
                     ))
                 }
+
+                <HashLink to={'#qa'} style={{ color: "inherit", textDecoration: 'none' }}>
+                    <MenuItem>
+                        <Typography textAlign="center">
+                            Питання та Відповіді
+                        </Typography>
+                    </MenuItem>
+                </HashLink>
             </Toolbar>
         </Container>
     </AppBar >
