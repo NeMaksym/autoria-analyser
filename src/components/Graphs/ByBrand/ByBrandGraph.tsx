@@ -5,8 +5,8 @@ import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Toolti
 import Search from 'classes/Search';
 import { BrandData } from 'types/searchTypes';
 import SearchParams from 'classes/SearchParams';
-import { FilterValues } from 'types/filterTypes';
 import ErrorMsg from 'components/ErrorMsg/ErrorMsg';
+import { CustomParams } from 'types/searchParamsTypes';
 import PendingMsg from 'components/PendingMsg/PendingMsg';
 import getGraphData from 'components/Graphs/ByBrand/getGraphData';
 import getGraphOptions from 'components/Graphs/ByBrand/getGraphOptions';
@@ -21,7 +21,7 @@ ChartJS.register(
 );
 
 interface Props {
-    filters: FilterValues
+    filters: CustomParams
     compareGearboxes: boolean
     setActiveBrandId: Dispatch<SetStateAction<number | undefined>>
 }

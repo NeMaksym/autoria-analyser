@@ -1,3 +1,5 @@
+import { Dispatch, SetStateAction } from 'react';
+import { FormikValues } from 'formik';
 import InfoIcon from '@mui/icons-material/Info';
 import {
     FormControl,
@@ -11,12 +13,30 @@ import {
     Checkbox,
     TextField,
     Tooltip,
+    ToggleButtonGroup,
+    ToggleButton
 } from "@mui/material";
+import { FuelType } from 'types/searchParamsTypes';
 
-const Filters = ({ formik, compareGearboxes, setCompareGearboxes }) => {
+const FUEL_LABELS = {
+    1: 'Бензин',
+    2: 'Дизель',
+    3: 'Газ',
+    4: 'Газ/Бензин',
+    5: 'Гібрид',
+    6: 'Електо',
+}
+
+interface Props {
+    formik: FormikValues
+    compareGearboxes: boolean
+    setCompareGearboxes: Dispatch<SetStateAction<boolean>>
+}
+
+const Filters = ({ formik, compareGearboxes, setCompareGearboxes }: Props) => {
     return (
-        <Paper sx={{ p: "16px" }} elevation={4}>
-            <Grid container spacing={1}>
+        <Paper sx={{ p: 4 }} elevation={4}>
+            <Grid container spacing={2}>
                 <Grid item xs={12}>
                     <Grid container spacing={2}>
                         <Grid item>
@@ -62,6 +82,24 @@ const Filters = ({ formik, compareGearboxes, setCompareGearboxes }) => {
                 </Grid>
 
                 <Grid item xs={12}>
+                    <ToggleButtonGroup
+                        color="primary"
+                        value={formik.values.fuelType}
+                        onChange={(_e, newTypes) => formik.setFieldValue('fuelType', newTypes)}
+                    >
+                        {
+                            Object.values(FuelType).map(typeId => (
+                                <ToggleButton
+                                    key={typeId}
+                                    value={typeId}
+                                    children={FUEL_LABELS[typeId]}
+                                />
+                            ))
+                        }
+                    </ToggleButtonGroup>
+                </Grid>
+
+                <Grid item xs={12}>
                     <FormGroup>
                         <FormControlLabel
                             name="compareGearboxes"
@@ -84,7 +122,7 @@ const Filters = ({ formik, compareGearboxes, setCompareGearboxes }) => {
 
                         <FormControlLabel
                             disabled
-                            control={<Checkbox checked />}
+                            control={<Checkbox checked sx={{ pb: 0 }} />}
                             label={
                                 <>
                                     Фільтри за замовчуванням

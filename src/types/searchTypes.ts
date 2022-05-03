@@ -1,9 +1,3 @@
-export enum Gearbox {
-    mechanic = 'M',
-    auto = 'A',
-    none = 'General',
-}
-
 export interface YearData {
     year: number
     count: number

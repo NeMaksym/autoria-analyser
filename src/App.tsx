@@ -7,14 +7,10 @@ import Info from 'components/Info/Info';
 import Filters from 'components/Filters';
 import CarPicker from 'components/CarPicker';
 import TopBar from 'components/TopBar/TopBar';
-import { FilterValues } from 'types/filterTypes';
+import { CustomParams } from 'types/searchParamsTypes';
 
 function App() {
-  const [filters, setFilters] = useState<FilterValues>({
-    price_do: 10000,
-    engineVolumeTo: undefined,
-    's_yers[0]': undefined,
-  })
+  const [filters, setFilters] = useState<CustomParams>({})
   const [comapreGearboxes, setCompareGearboxes] = useState<boolean>(false)
 
   return (
@@ -24,7 +20,6 @@ function App() {
       <Grid container spacing={4} sx={{ p: '32px' }}>
         <Grid item xs={12}>
           <Filters
-            filters={filters}
             setFilters={setFilters}
             compareGearboxes={comapreGearboxes}
             setCompareGearboxes={setCompareGearboxes}

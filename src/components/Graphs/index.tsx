@@ -1,14 +1,14 @@
 import { useState } from 'react';
 import { Grid } from '@mui/material';
 
-import { FilterValues } from 'types/filterTypes';
+import { CustomParams } from 'types/searchParamsTypes';
 import ByModel from 'components/Graphs/ByModel/ByModel';
 import ByYearGraph from 'components/Graphs/ByYear/ByYearGraph';
 import ByBrandGraph from 'components/Graphs/ByBrand/ByBrandGraph';
 import ByRegionGraph from 'components/Graphs/ByRegion/ByRegionGraph';
 
 interface Params {
-    filters: FilterValues,
+    filters: CustomParams,
     comapreGearboxes: boolean
 }
 

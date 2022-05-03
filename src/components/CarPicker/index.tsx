@@ -1,11 +1,10 @@
 import { Grid } from '@mui/material';
 
-import { Gearbox } from 'types/searchTypes';
-import { FilterValues } from 'types/filterTypes';
 import Column from 'components/CarPicker/Column/Column';
+import { CustomParams, Gearbox } from 'types/searchParamsTypes';
 
 interface Props {
-    filters: FilterValues
+    filters: CustomParams
 }
 
 // eslint-disable-next-line import/no-anonymous-default-export

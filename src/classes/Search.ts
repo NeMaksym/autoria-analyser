@@ -4,9 +4,9 @@ import URL from "consts/url";
 import REGIONS from 'consts/regions';
 import TOP_BRANDS from 'consts/topBrands';
 import SearchParams from "classes/SearchParams";
+import { Gearbox } from 'types/searchParamsTypes';
 import getTopBrandById from "utils/getTopBrandById";
 import {
-    Gearbox,
     YearData,
     RegionData,
     BrandData,

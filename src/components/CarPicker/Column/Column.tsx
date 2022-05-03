@@ -3,15 +3,15 @@ import { Grid, Typography } from '@mui/material';
 import { groupBy, Dictionary } from 'lodash';
 
 import Search from 'classes/Search';
+import { CarOption } from 'types/searchTypes';
 import SearchParams from 'classes/SearchParams';
-import { FilterValues } from 'types/filterTypes';
 import ErrorMsg from 'components/ErrorMsg/ErrorMsg';
-import { CarOption, Gearbox } from 'types/searchTypes';
 import PendingMsg from 'components/PendingMsg/PendingMsg';
+import { CustomParams, Gearbox } from 'types/searchParamsTypes';
 import YearSection from 'components/CarPicker/YearSection/YearSection';
 
 interface Props {
-    filters: FilterValues
+    filters: CustomParams
     gearbox: Gearbox
     title: string
 }

@@ -5,11 +5,11 @@ import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Toolti
 import Search from 'classes/Search';
 import { YearData } from 'types/searchTypes';
 import SearchParams from 'classes/SearchParams';
-import { FilterValues } from 'types/filterTypes';
+import ErrorMsg from 'components/ErrorMsg/ErrorMsg';
+import { CustomParams } from 'types/searchParamsTypes';
+import PendingMsg from 'components/PendingMsg/PendingMsg';
 import getGraphData from 'components/Graphs/ByYear/getGraphData';
 import getGraphOptions from 'components/Graphs/ByYear/getGraphOptions';
-import ErrorMsg from 'components/ErrorMsg/ErrorMsg';
-import PendingMsg from 'components/PendingMsg/PendingMsg';
 
 ChartJS.register(
     CategoryScale,
@@ -21,7 +21,7 @@ ChartJS.register(
 );
 
 interface Props {
-    filters: FilterValues
+    filters: CustomParams
     compareGearboxes: boolean
 }
 

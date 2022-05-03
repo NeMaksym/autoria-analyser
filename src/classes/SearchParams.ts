@@ -1,5 +1,5 @@
 import { omit } from 'lodash'
-import { Gearbox } from 'types/searchTypes';
+import { Gearbox } from 'types/searchParamsTypes';
 import { Params, CustomParams } from 'types/searchParamsTypes';
 
 class SearchParams {
@@ -18,6 +18,8 @@ class SearchParams {
     }
 
     constructor(customParams?: CustomParams) {
+        if (typeof customParams === 'undefined') return
+
         this.params = {
             ...this.params,
             ...customParams
@@ -52,15 +54,6 @@ class SearchParams {
                 }
                 break;
             default: console.error("Wrong type of gearbox is provided")
-        }
-
-        return this
-    }
-
-    setBensin() {
-        this.params = {
-            ...this.params,
-            'type[0]': 1
         }
 
         return this
