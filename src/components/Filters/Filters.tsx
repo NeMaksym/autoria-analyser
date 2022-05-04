@@ -16,6 +16,8 @@ import {
     ToggleButtonGroup,
     ToggleButton
 } from "@mui/material";
+import { useTheme } from '@mui/material/styles';
+import useMediaQuery from '@mui/material/useMediaQuery';
 import { FuelType } from 'types/searchParamsTypes';
 
 const FUEL_LABELS = {
@@ -34,6 +36,9 @@ interface Props {
 }
 
 const Filters = ({ formik, compareGearboxes, setCompareGearboxes }: Props) => {
+    const theme = useTheme();
+    const matches = useMediaQuery(theme.breakpoints.up('sm'));
+
     return (
         <Paper sx={{ p: 4 }} elevation={4}>
             <Grid container spacing={2}>
@@ -83,6 +88,7 @@ const Filters = ({ formik, compareGearboxes, setCompareGearboxes }: Props) => {
 
                 <Grid item xs={12}>
                     <ToggleButtonGroup
+                        orientation={matches ? 'horizontal' : 'vertical'}
                         color="primary"
                         value={formik.values.fuelType}
                         onChange={(_e, newTypes) => formik.setFieldValue('fuelType', newTypes)}
