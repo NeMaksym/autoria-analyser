@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef, Dispatch, SetStateAction, MouseEvent } from 'react';
+import { Box } from '@mui/material';
 import { Chart, getElementAtEvent } from 'react-chartjs-2';
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js';
 
@@ -63,23 +64,24 @@ const ByBrandGraph = ({ filters, compareGearboxes, setActiveBrandId }: Props) =>
     const graphData = getGraphData(data, compareGearboxes)
 
     return (
-        <Chart
-            type='bar'
-            ref={chartRef}
-            options={getGraphOptions()}
-            data={graphData}
-            height={80}
-            onClick={(event: MouseEvent<HTMLCanvasElement>) => {
-                if (!chartRef.current) return
+        <Box sx={{ height: '365px', minWidth: '1000px' }}>
+            <Chart
+                type='bar'
+                ref={chartRef}
+                options={getGraphOptions()}
+                data={graphData}
+                onClick={(event: MouseEvent<HTMLCanvasElement>) => {
+                    if (!chartRef.current) return
 
-                const { index } = getElementAtEvent(chartRef.current, event)[0];
-                const label = graphData.labels[index];
+                    const { index } = getElementAtEvent(chartRef.current, event)[0];
+                    const label = graphData.labels[index];
 
-                const id = data.find(({ name }) => name === label)?.id
+                    const id = data.find(({ name }) => name === label)?.id
 
-                setActiveBrandId(id)
-            }}
-        />
+                    setActiveBrandId(id)
+                }}
+            />
+        </Box>
     )
 }
 

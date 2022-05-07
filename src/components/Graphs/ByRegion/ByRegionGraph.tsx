@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { Box } from '@mui/material';
 import { Bar } from 'react-chartjs-2';
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js';
 
@@ -57,11 +58,12 @@ const ByRegionGraph = ({ filters, compareGearboxes }: Props) => {
     if (isPending) return <PendingMsg />
 
     return (
-        <Bar
-            options={getGraphOptions(data)}
-            data={getGraphData(data, compareGearboxes)}
-            height={80}
-        />
+        <Box sx={{ height: '365px', minWidth: '1000px' }}>
+            <Bar
+                options={getGraphOptions(data)}
+                data={getGraphData(data, compareGearboxes)}
+            />
+        </Box>
     )
 }
 

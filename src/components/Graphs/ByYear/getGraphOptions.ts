@@ -31,6 +31,7 @@ const getGraphOptions = (data: YearData[]) => {
             },
         },
         responsive: true,
+        maintainAspectRatio: false,
         scales: {
             x: {
                 stacked: true,

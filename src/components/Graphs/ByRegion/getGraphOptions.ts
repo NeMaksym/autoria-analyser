@@ -34,6 +34,7 @@ const getGraphOptions = (data: RegionData[]) => {
             },
         },
         responsive: true,
+        maintainAspectRatio: false,
         scales: {
             x: {
                 stacked: true,
