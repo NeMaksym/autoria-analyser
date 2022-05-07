@@ -4,7 +4,7 @@ import { omit } from 'lodash'
 
 import Filters from 'components/Filters/Filters';
 import { CustomParams } from 'types/searchParamsTypes';
-import { FuelKeys, FuelType } from 'types/searchParamsTypes';
+import { FuelKeys } from 'types/searchParamsTypes';
 
 
 interface Props {
@@ -19,7 +19,7 @@ const FiltersContainer = ({ setFilters, compareGearboxes, setCompareGearboxes }:
             price_do: 10000,
             engineVolumeTo: undefined,
             's_yers[0]': undefined,
-            fuelType: [FuelType.bensin]
+            fuelType: []
         },
         onSubmit: () => { }
     });
