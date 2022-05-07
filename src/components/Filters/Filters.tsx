@@ -16,7 +16,8 @@ import {
     Select,
     MenuItem,
     ListItemText,
-    SelectChangeEvent
+    SelectChangeEvent,
+    Divider
 } from "@mui/material";
 import { FuelType } from 'types/searchParamsTypes';
 
@@ -43,9 +44,17 @@ interface Props {
     formik: FormikValues
     compareGearboxes: boolean
     setCompareGearboxes: Dispatch<SetStateAction<boolean>>
+    showRegionGraph: boolean
+    setShowRegionGraph: Dispatch<SetStateAction<boolean>>
 }
 
-const Filters = ({ formik, compareGearboxes, setCompareGearboxes }: Props) => (
+const Filters = ({
+    formik,
+    compareGearboxes,
+    setCompareGearboxes,
+    showRegionGraph,
+    setShowRegionGraph
+}: Props) => (
     <Paper sx={{ p: 4 }} elevation={4}>
         <Grid container spacing={2}>
             <Grid item xs={12} sm="auto">
@@ -119,6 +128,37 @@ const Filters = ({ formik, compareGearboxes, setCompareGearboxes }: Props) => (
             </Grid>
 
             <Grid item xs={12}>
+                <FormControlLabel
+                    disabled
+                    control={<Checkbox checked sx={{ pb: 0 }} />}
+                    label={
+                        <>
+                            Фільтри за замовчуванням
+                            <Tooltip
+                                disableFocusListener
+                                disableTouchListener
+                                title={
+                                    <>
+                                        • Тільки вживані авто <br />
+                                        • Легкові автомобілі <br />
+                                        • З фото <br />
+                                        • Не показувати продані <br />
+                                        • Виключити Укр і Рос марки (ВАЗ, ЗАЗ) <br />
+                                    </>
+                                }
+                            >
+                                <InfoIcon fontSize="small" sx={{ fontSize: 16, ml: '2px' }} />
+                            </Tooltip>
+                        </>
+                    }
+                />
+            </Grid>
+
+            <Grid item xs={12}>
+                <Divider />
+            </Grid>
+
+            <Grid item xs={12}>
                 <FormGroup>
                     <FormControlLabel
                         name="compareGearboxes"
@@ -131,37 +171,18 @@ const Filters = ({ formik, compareGearboxes, setCompareGearboxes }: Props) => (
                                     disableFocusListener
                                     disableTouchListener
                                     title="Відфільтрувавши оголошення за вказаними параметрами,
-                                         показує скільки з них на автоматі, а скільки на механіці"
+                                    показує скільки з них на автоматі, а скільки на механіці"
                                 >
                                     <InfoIcon fontSize="small" sx={{ fontSize: 16, ml: '2px' }} />
                                 </Tooltip>
                             </>
                         }
                     />
-
                     <FormControlLabel
-                        disabled
-                        control={<Checkbox checked sx={{ pb: 0 }} />}
-                        label={
-                            <>
-                                Фільтри за замовчуванням
-                                <Tooltip
-                                    disableFocusListener
-                                    disableTouchListener
-                                    title={
-                                        <>
-                                            • Тільки вживані авто <br />
-                                            • Легкові автомобілі <br />
-                                            • З фото <br />
-                                            • Не показувати продані <br />
-                                            • Виключити Укр і Рос марки (ВАЗ, ЗАЗ) <br />
-                                        </>
-                                    }
-                                >
-                                    <InfoIcon fontSize="small" sx={{ fontSize: 16, ml: '2px' }} />
-                                </Tooltip>
-                            </>
-                        }
+                        name="compareGearboxes"
+                        control={<Checkbox checked={showRegionGraph} />}
+                        onChange={() => setShowRegionGraph(!showRegionGraph)}
+                        label="Показати графік за регіоном"
                     />
                 </FormGroup>
             </Grid>

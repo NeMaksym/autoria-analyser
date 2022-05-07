@@ -3,17 +3,25 @@ import { useFormik } from 'formik';
 import { omit } from 'lodash'
 
 import Filters from 'components/Filters/Filters';
-import { CustomParams } from 'types/searchParamsTypes';
 import { FuelKeys } from 'types/searchParamsTypes';
+import { CustomParams } from 'types/searchParamsTypes';
 
 
 interface Props {
     setFilters: Dispatch<SetStateAction<CustomParams>>
     compareGearboxes: boolean
     setCompareGearboxes: Dispatch<SetStateAction<boolean>>
+    showRegionGraph: boolean
+    setShowRegionGraph: Dispatch<SetStateAction<boolean>>
 }
 
-const FiltersContainer = ({ setFilters, compareGearboxes, setCompareGearboxes }: Props) => {
+const FiltersContainer = ({
+    setFilters,
+    compareGearboxes,
+    setCompareGearboxes,
+    showRegionGraph,
+    setShowRegionGraph
+}: Props) => {
     const formik = useFormik({
         initialValues: {
             price_do: 10000,
@@ -45,6 +53,8 @@ const FiltersContainer = ({ setFilters, compareGearboxes, setCompareGearboxes }:
             formik={formik}
             compareGearboxes={compareGearboxes}
             setCompareGearboxes={setCompareGearboxes}
+            showRegionGraph={showRegionGraph}
+            setShowRegionGraph={setShowRegionGraph}
         />
     )
 }

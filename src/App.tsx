@@ -12,6 +12,7 @@ import { CustomParams } from 'types/searchParamsTypes';
 function App() {
   const [filters, setFilters] = useState<CustomParams>({})
   const [comapreGearboxes, setCompareGearboxes] = useState<boolean>(false)
+  const [showRegionGraph, setShowRegionGraph] = useState<boolean>(false)
 
   return (
     <>
@@ -23,12 +24,23 @@ function App() {
             setFilters={setFilters}
             compareGearboxes={comapreGearboxes}
             setCompareGearboxes={setCompareGearboxes}
+            showRegionGraph={showRegionGraph}
+            setShowRegionGraph={setShowRegionGraph}
           />
         </Grid>
 
         <Grid item xs={12}>
           <Routes>
-            <Route path="/graphs" element={<Graphs filters={filters} comapreGearboxes={comapreGearboxes} />} />
+            <Route
+              path="/graphs"
+              element={
+                <Graphs
+                  filters={filters}
+                  comapreGearboxes={comapreGearboxes}
+                  showRegionGraph={showRegionGraph}
+                />
+              }
+            />
             <Route path="/carpicker" element={<CarPicker filters={filters} />} />
             <Route path="*" element={<Navigate to="graphs" />} />
           </Routes>

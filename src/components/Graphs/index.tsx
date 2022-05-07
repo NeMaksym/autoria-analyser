@@ -9,8 +9,9 @@ import ByBrandGraph from 'components/Graphs/ByBrand/ByBrandGraph';
 import ByRegionGraph from 'components/Graphs/ByRegion/ByRegionGraph';
 
 interface Params {
-    filters: CustomParams,
+    filters: CustomParams
     comapreGearboxes: boolean
+    showRegionGraph: boolean
 }
 
 const CustomGridContainer = styled(Grid)(() => ({
@@ -22,7 +23,11 @@ const CustomGridContainer = styled(Grid)(() => ({
 }))
 
 // eslint-disable-next-line import/no-anonymous-default-export
-export default function ({ filters, comapreGearboxes }: Params): JSX.Element {
+export default function ({
+    filters,
+    comapreGearboxes,
+    showRegionGraph
+}: Params): JSX.Element {
     const [activeBrandId, setActiveBrandId] = useState<number | undefined>(undefined)
 
     return (
@@ -41,14 +46,20 @@ export default function ({ filters, comapreGearboxes }: Params): JSX.Element {
                 <ByYearGraph filters={filters} compareGearboxes={comapreGearboxes} />
             </Grid>
 
-            <Grid item xs={12}>
-                <Typography variant='h5'>
-                    За регіоном
-                </Typography>
-            </Grid>
-            <Grid item xs={12}>
-                <ByRegionGraph filters={filters} compareGearboxes={comapreGearboxes} />
-            </Grid>
+            {
+                showRegionGraph && (
+                    <>
+                        <Grid item xs={12}>
+                            <Typography variant='h5'>
+                                За регіоном
+                            </Typography>
+                        </Grid>
+                        <Grid item xs={12}>
+                            <ByRegionGraph filters={filters} compareGearboxes={comapreGearboxes} />
+                        </Grid>
+                    </>
+                )
+            }
 
             <Grid item xs={12}>
                 <Typography variant='h5'>
