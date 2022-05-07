@@ -2,7 +2,6 @@
   "name": "autoria_analyser",
   "version": "0.1.0",
   "private": true,
-  "homepage": "http://nemaksym.github.io/autoria-analyser",
   "dependencies": {
     "@emotion/react": "^11.9.0",
     "@emotion/styled": "^11.8.1",
@@ -25,9 +24,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
-    "predeploy": "npm run build",
-    "deploy": "gh-pages -d build"
+    "build": "react-scripts build"
   },
   "eslintConfig": {
     "extends": [
@@ -48,7 +45,6 @@
   },
   "devDependencies": {
     "@types/lodash": "^4.14.182",
-    "@types/react-router-hash-link": "^2.4.5",
-    "gh-pages": "^3.2.3"
+    "@types/react-router-hash-link": "^2.4.5"
   }
 }
