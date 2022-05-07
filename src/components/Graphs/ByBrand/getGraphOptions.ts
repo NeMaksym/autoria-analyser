@@ -1,10 +1,6 @@
 const getGraphOptions = () => {
     return {
         plugins: {
-            title: {
-                display: true,
-                text: 'За брендом',
-            },
             legend: {
                 position: 'bottom',
             },

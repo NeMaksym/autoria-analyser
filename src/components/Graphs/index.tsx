@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Grid } from '@mui/material';
+import { Grid, Typography } from '@mui/material';
 import { styled } from '@mui/material/styles';
 
 import { CustomParams } from 'types/searchParamsTypes';
@@ -28,10 +28,27 @@ export default function ({ filters, comapreGearboxes }: Params): JSX.Element {
     return (
         <CustomGridContainer container spacing={2}>
             <Grid item xs={12}>
+                <Typography variant='h5'>
+                    За роком випуску
+                </Typography>
+            </Grid>
+            <Grid item xs={12}>
                 <ByYearGraph filters={filters} compareGearboxes={comapreGearboxes} />
+            </Grid>
+
+            <Grid item xs={12}>
+                <Typography variant='h5'>
+                    За регіоном
+                </Typography>
             </Grid>
             <Grid item xs={12}>
                 <ByRegionGraph filters={filters} compareGearboxes={comapreGearboxes} />
+            </Grid>
+
+            <Grid item xs={12}>
+                <Typography variant='h5'>
+                    За маркою
+                </Typography>
             </Grid>
             <Grid item xs={12}>
                 <ByBrandGraph
@@ -40,6 +57,16 @@ export default function ({ filters, comapreGearboxes }: Params): JSX.Element {
                     setActiveBrandId={setActiveBrandId}
                 />
             </Grid>
+
+            {
+                activeBrandId && (
+                    <Grid item xs={12}>
+                        <Typography variant='h5'>
+                            За моделлю
+                        </Typography>
+                    </Grid>
+                )
+            }
             <Grid item xs={12}>
                 <ByModel
                     filters={filters}

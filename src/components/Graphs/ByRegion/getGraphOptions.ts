@@ -12,10 +12,6 @@ interface LabelProps {
 const getGraphOptions = (data: RegionData[]) => {
     return {
         plugins: {
-            title: {
-                display: true,
-                text: 'За регіоном',
-            },
             tooltip: {
                 callbacks: {
                     label: ({ dataset, label, formattedValue }: LabelProps) => {

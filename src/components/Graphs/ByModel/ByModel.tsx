@@ -57,7 +57,7 @@ const ByBrandGraph = ({ filters, compareGearboxes, activeBrandId }: Props) => {
         return () => { isCanceled = true }
     }, [filters, activeBrandId])
 
-    if (!activeBrandId) return <h2>Оберіть бренд авто натиснувши на стовпчик ☝️</h2>
+    if (!activeBrandId) return <h2>Оберіть марку авто натиснувши на стовпчик ☝️</h2>
     if (isError) return <ErrorMsg />
     if (isPending) return <PendingMsg />
 

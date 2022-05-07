@@ -11,10 +11,6 @@ interface LabelProps {
 const getGraphOptions = (data: YearData[]) => {
     return {
         plugins: {
-            title: {
-                display: true,
-                text: 'За роком випуску',
-            },
             tooltip: {
                 callbacks: {
                     label: ({ dataset, label, formattedValue }: LabelProps) => {
