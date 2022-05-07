@@ -1,4 +1,5 @@
 import { ModelData } from "types/searchTypes";
+import GraphOptions from "consts/graphOption";
 import GRAPH_PALETTE from 'consts/graphPalette';
 
 interface Dataset {
@@ -25,19 +26,19 @@ const getGraphData: GetGraphData = (data, compareGearboxes) => {
 
     if (compareGearboxes) {
         graphData.datasets.push({
-            label: "Оголошень з коробкою автомат",
+            label: GraphOptions.Automat,
             data: [],
             backgroundColor: GRAPH_PALETTE.automatColor
         })
 
         graphData.datasets.push({
-            label: 'Оголошень з ручною коробкою',
+            label: GraphOptions.Mechanic,
             data: [],
             backgroundColor: GRAPH_PALETTE.mechanicColor
         })
     } else {
         graphData.datasets.push({
-            label: 'Всього оголошень (на основі фільтрів)',
+            label: GraphOptions.Filter,
             data: [],
             backgroundColor: GRAPH_PALETTE.mechanicColor
         })

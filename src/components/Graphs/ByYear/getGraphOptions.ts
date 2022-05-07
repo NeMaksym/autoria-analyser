@@ -1,4 +1,5 @@
 import { YearData } from "types/searchTypes";
+import GraphOptions from "consts/graphOption";
 
 interface LabelProps {
     dataset: {
@@ -10,15 +11,21 @@ interface LabelProps {
 
 const getGraphOptions = (data: YearData[]) => {
     return {
+        interaction: {
+            mode: 'index',
+            intersect: false,
+        },
         plugins: {
             tooltip: {
                 callbacks: {
                     label: ({ dataset, label, formattedValue }: LabelProps) => {
-                        if (dataset.label === 'Загалом на ринку') {
-                            return data.find(yearData => yearData.year === Number(label))?.count
+                        if (dataset.label === GraphOptions.Total) {
+                            const yearData = data.find(item => item.year === Number(label))
+
+                            return `${dataset.label}: ${yearData?.count.toLocaleString() || ''}`
                         }
 
-                        return formattedValue
+                        return `${dataset.label}: ${formattedValue}`
                     },
                 }
             },

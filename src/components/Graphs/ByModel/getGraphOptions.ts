@@ -1,5 +1,9 @@
 const getGraphOptions = () => {
     return {
+        interaction: {
+            mode: 'index',
+            intersect: false,
+        },
         plugins: {
             legend: {
                 position: 'bottom',

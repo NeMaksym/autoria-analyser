@@ -1,4 +1,5 @@
 import { YearData } from "types/searchTypes";
+import GraphOptions from "consts/graphOption";
 import GRAPH_PALETTE from 'consts/graphPalette';
 
 interface Dataset {
@@ -24,37 +25,29 @@ const getGraphData: GetGraphData = (data, compareGearboxes) => {
     }
 
     if (compareGearboxes) {
-        [
-            {
-                label: "Оголошень з коробкою автомат",
-                data: [],
-                backgroundColor: GRAPH_PALETTE.automatColor
-            },
-            {
-                label: 'Оголошень з ручною коробкою',
-                data: [],
-                backgroundColor: GRAPH_PALETTE.mechanicColor
-            },
-            {
-                label: 'Загалом на ринку',
-                data: [],
-                backgroundColor: GRAPH_PALETTE.totalColor
-            },
-        ].forEach(item => graphData.datasets.push(item))
+        graphData.datasets.push({
+            label: GraphOptions.Automat,
+            data: [],
+            backgroundColor: GRAPH_PALETTE.automatColor
+        })
+        graphData.datasets.push({
+            label: GraphOptions.Mechanic,
+            data: [],
+            backgroundColor: GRAPH_PALETTE.mechanicColor
+        })
     } else {
-        [
-            {
-                label: 'Всього оголошень (на основі фільтрів)',
-                data: [],
-                backgroundColor: GRAPH_PALETTE.mechanicColor
-            },
-            {
-                label: 'Загалом на ринку',
-                data: [],
-                backgroundColor: GRAPH_PALETTE.totalColor,
-            },
-        ].forEach(item => graphData.datasets.push(item))
+        graphData.datasets.push({
+            label: GraphOptions.Filter,
+            data: [],
+            backgroundColor: GRAPH_PALETTE.mechanicColor
+        })
     }
+
+    graphData.datasets.push({
+        label: GraphOptions.Total,
+        data: [],
+        backgroundColor: GRAPH_PALETTE.totalColor,
+    })
 
     data
         .sort((a, b) => a.year - b.year)

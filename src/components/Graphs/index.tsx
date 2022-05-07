@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { Grid, Typography } from '@mui/material';
 import { styled } from '@mui/material/styles';
+import { Grid, Typography } from '@mui/material';
 
 import { CustomParams } from 'types/searchParamsTypes';
 import ByModel from 'components/Graphs/ByModel/ByModel';
@@ -27,6 +27,11 @@ export default function ({ filters, comapreGearboxes }: Params): JSX.Element {
 
     return (
         <CustomGridContainer container spacing={2}>
+            <Grid item xs={12} container justifyContent="center">
+                <Typography variant='h4'>
+                    Кількість пропозицій
+                </Typography>
+            </Grid>
             <Grid item xs={12}>
                 <Typography variant='h5'>
                     За роком випуску
