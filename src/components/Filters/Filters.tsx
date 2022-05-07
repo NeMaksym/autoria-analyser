@@ -50,9 +50,8 @@ const Filters = ({ formik, compareGearboxes, setCompareGearboxes }: Props) => (
         <Grid container spacing={2}>
             <Grid item xs={12} sm="auto">
                 <FormControl sx={{ width: { xs: '100%', sm: '200px' } }}>
-                    <InputLabel shrink>Ціна до</InputLabel>
+                    <InputLabel>Ціна до</InputLabel>
                     <OutlinedInput
-                        notched
                         label="Ціна до"
                         type="number"
                         startAdornment={<InputAdornment position="start">$</InputAdornment>}
@@ -64,12 +63,14 @@ const Filters = ({ formik, compareGearboxes, setCompareGearboxes }: Props) => (
 
             <Grid item xs={12} sm="auto" container spacing={2}>
                 <Grid item>
-                    <FormControl sx={{ width: 100 }}>
-                        <InputLabel shrink>Двигун до</InputLabel>
+                    <FormControl sx={{ width: 115 }}>
+                        <InputLabel>Об’єм до</InputLabel>
                         <OutlinedInput
-                            notched
-                            label="Двигун до"
+                            label="Об’єм до"
                             type="number"
+                            inputProps={{
+                                min: 0
+                            }}
                             endAdornment={<InputAdornment position="end">л.</InputAdornment>}
                             value={formik.values.engineVolumeTo}
                             onChange={e => formik.setFieldValue('engineVolumeTo', e.target.value)}
@@ -78,11 +79,11 @@ const Filters = ({ formik, compareGearboxes, setCompareGearboxes }: Props) => (
                 </Grid>
                 <Grid item>
                     <TextField
-                        sx={{ width: 100 }}
+                        sx={{ width: 115 }}
                         label="Рік від"
                         type="number"
-                        InputLabelProps={{
-                            shrink: true,
+                        inputProps={{
+                            min: 2000
                         }}
                         value={formik.values['s_yers[0]']}
                         onChange={e => formik.setFieldValue('s_yers[0]', e.target.value)}
@@ -91,7 +92,7 @@ const Filters = ({ formik, compareGearboxes, setCompareGearboxes }: Props) => (
             </Grid>
 
             <Grid item xs={12}>
-                <FormControl sx={{ minWidth: { xs: "100%", sm: '315px' } }}>
+                <FormControl sx={{ minWidth: { xs: "100%", sm: '330px' } }}>
                     <InputLabel>Тип палива</InputLabel>
                     <Select
                         multiple
