@@ -143,7 +143,9 @@ class Search {
                         // #5. Add car model to the result array, if it has enough proposition on the market
                         return carOptions.push({
                             year,
+                            brandId,
                             brandName,
+                            modelId: model.id,
                             modelName: model.name,
                             count: model.count,
                         })

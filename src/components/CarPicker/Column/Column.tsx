@@ -81,7 +81,12 @@ const Column = ({ filters, gearbox, title }: Props) => {
                         .sort((a, b) => Number(b) - Number(a))
                         .map(year => (
                             <Grid key={year} item xs={12}>
-                                <YearSection year={year} models={data[year]} />
+                                <YearSection
+                                    year={year}
+                                    models={data[year]}
+                                    filters={filters}
+                                    gearbox={gearbox}
+                                />
                             </Grid>
                         ))
             }

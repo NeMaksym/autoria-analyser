@@ -15,7 +15,9 @@ export interface RegionData {
 
 export interface CarOption {
     year: number
+    brandId: number
     brandName: string
+    modelId: number
     modelName: string
     count: number
 }
