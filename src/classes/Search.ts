@@ -103,6 +103,7 @@ class Search {
         })
     }
 
+    // FIXME: Omit "year from" filter option 
     async carPicker(filterParams: SearchParams, gearbox: Gearbox): Promise<CarOption[]> {
         const MIN_CARS_PER_YEAR = 100  // Filters years that have < 100 cars
         const MIN_BRAND_COUNT = 20     // Filters brands that have < 20 cars

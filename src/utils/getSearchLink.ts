@@ -1,5 +1,6 @@
 import { Gearbox } from "types/searchParamsTypes";
 
+// TODO: Support of other filters (fuel type, engine volume, body form)
 const getSearchLink = (
     year: number,
     brandId: number,

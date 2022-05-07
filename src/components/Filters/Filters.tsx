@@ -48,6 +48,7 @@ interface Props {
     setShowRegionGraph: Dispatch<SetStateAction<boolean>>
 }
 
+// TODO: Add "body form" filter
 const Filters = ({
     formik,
     compareGearboxes,
