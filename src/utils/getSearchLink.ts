@@ -9,11 +9,21 @@ const getSearchLink = (
     filters: CustomParams,
 ) => {
     // Mandatory
-    let query = []
-
-    query.push(`brand.id[0]=${brandId}`)
-    query.push(`model.id[0]=${modelId}`)
-    query.push(`year[0].gte=${year}`)
+    let query = [
+        "indexName=auto",
+        "country.origin.id[0].not=804",
+        "country.origin.id[1].not=643",
+        "categories.main.id=1",
+        "country.import.usa.not=-1",
+        "sort[0].order=price.asc",
+        "abroad.not=0",
+        "custom.not=1",
+        "photos.all.id.gte=1",
+        "size=10",
+        `brand.id[0]=${brandId}`,
+        `model.id[0]=${modelId}`,
+        `year[0].gte=${year}`,
+    ]
 
     switch (gearbox) {
         case Gearbox.mechanic: query.push('gearbox.id[0]=1'); break
@@ -31,7 +41,7 @@ const getSearchLink = (
     if (price_do) query.push(`price.USD.lte=${price_do}&price.currency=1`)
     if (engineVolumeTo) query.push(`engine.lte=${engineVolumeTo}`)
 
-    return `https://auto.ria.com/search/?indexName=auto&categories.main.id=1&country.import.usa.not=-1&sort[0].order=price.asc&abroad.not=0&custom.not=1&size=10&${query.join('&')}`
+    return `https://auto.ria.com/search/?${query.join('&')}`
 }
 
 export default getSearchLink;
