@@ -28,6 +28,7 @@ const Column = ({ filters, gearbox, title }: Props) => {
 
         setIsError(false)
         setIsPending(true)
+        setData({})
 
         new Search()
             .carPicker(searchParams, gearbox)
@@ -55,40 +56,38 @@ const Column = ({ filters, gearbox, title }: Props) => {
                 </Typography>
             </Grid>
             {
-                isError && (
-                    <Grid item xs={12}>
-                        <ErrorMsg />
-                    </Grid>
-                )
-            }
-            {
-                !isError && isPending && (
-                    <Grid item xs={12}>
-                        <PendingMsg />
-                    </Grid>
-                )
-            }
-            {
-                !isError && !isPending && !Object.keys(data).length
+                isError
                     ? (
                         <Grid item xs={12}>
-                            <Typography variant="h6">
-                                Нічого не знайдено. Спропуйте змінити параметри
-                            </Typography>
+                            <ErrorMsg />
                         </Grid>
                     )
-                    : Object.keys(data)
-                        .sort((a, b) => Number(b) - Number(a))
-                        .map(year => (
-                            <Grid key={year} item xs={12}>
-                                <YearSection
-                                    year={year}
-                                    models={data[year]}
-                                    filters={filters}
-                                    gearbox={gearbox}
-                                />
+                    : isPending
+                        ? (
+                            <Grid item xs={12}>
+                                <PendingMsg />
                             </Grid>
-                        ))
+                        )
+                        : !Object.keys(data).length
+                            ? (
+                                <Grid item xs={12}>
+                                    <Typography variant="h6">
+                                        Нічого не знайдено. Спропуйте змінити параметри
+                                    </Typography>
+                                </Grid>
+                            )
+                            : Object.keys(data)
+                                .sort((a, b) => Number(b) - Number(a))
+                                .map(year => (
+                                    <Grid key={year} item xs={12}>
+                                        <YearSection
+                                            year={year}
+                                            models={data[year]}
+                                            filters={filters}
+                                            gearbox={gearbox}
+                                        />
+                                    </Grid>
+                                ))
             }
         </Grid >
     )
