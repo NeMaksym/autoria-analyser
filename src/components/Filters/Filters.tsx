@@ -181,7 +181,7 @@ const Filters = ({
                     />
                     <FormControlLabel
                         name="compareGearboxes"
-                        control={<Checkbox checked={showRegionGraph} />}
+                        control={<Checkbox sx={{ pb: 0 }} checked={showRegionGraph} />}
                         onChange={() => setShowRegionGraph(!showRegionGraph)}
                         label="Показати графік за регіоном"
                     />
