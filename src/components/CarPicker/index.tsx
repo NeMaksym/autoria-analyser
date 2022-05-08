@@ -11,10 +11,10 @@ interface Props {
 export default function ({ filters }: Props) {
     return (
         <Grid container spacing={2}>
-            <Grid item md={6}>
+            <Grid item sm={6}>
                 <Column filters={filters} gearbox={Gearbox.mechanic} title="Механіка" />
             </Grid>
-            <Grid item md={6}>
+            <Grid item sm={6}>
                 <Column filters={filters} gearbox={Gearbox.auto} title="Автомат" />
             </Grid>
         </Grid>
