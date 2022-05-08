@@ -63,7 +63,7 @@ const Filters = ({
     let isCarpickerPage = Boolean(useMatch(Pages.carpicker));
 
     return (
-        <Paper sx={{ p: 4 }} elevation={4}>
+        <Paper sx={{ p: 4, pb: 2 }} elevation={4}>
             <Grid container spacing={2}>
                 <Grid item xs={12} sm="auto">
                     <FormControl sx={{ width: { xs: '100%', sm: '200px' } }}>
@@ -190,7 +190,7 @@ const Filters = ({
                         />
                         <FormControlLabel
                             name="compareGearboxes"
-                            control={<Checkbox sx={{ pb: 0 }} checked={showRegionGraph} />}
+                            control={<Checkbox checked={showRegionGraph} />}
                             onChange={() => setShowRegionGraph(!showRegionGraph)}
                             label="Показати графік за регіоном"
                         />
