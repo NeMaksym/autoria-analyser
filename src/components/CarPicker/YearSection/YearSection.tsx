@@ -45,7 +45,7 @@ const YearSection = ({ year, models, filters, gearbox }: Props) => (
                                     rel="noopener noreferrer"
                                     href={
                                         filters?.price_do
-                                            ? getSearchLink(year, brandId, modelId, filters.price_do, gearbox)
+                                            ? getSearchLink(year, brandId, modelId, gearbox, filters)
                                             : '#'
                                     }
                                 >

@@ -12,6 +12,16 @@ export enum FuelType {
     hybrid = '5',
     electro = '6'
 }
+
+export enum FuelKeys {
+    'type[0]' = 'type[0]',
+    'type[1]' = 'type[1]',
+    'type[2]' = 'type[2]',
+    'type[3]' = 'type[3]',
+    'type[4]' = 'type[4]',
+    'type[5]' = 'type[5]',
+}
+
 export interface Params extends CustomParams {
     /** Coundition: used */
     indexName: 'auto',
@@ -30,8 +40,6 @@ export interface Params extends CustomParams {
     'brandOrigin[0]': 643,
     'brandOrigin[1]': 804,
 }
-
-export type FuelKeys = 'type[0]' | 'type[1]' | 'type[2]' | 'type[3]' | 'type[4]' | 'type[5]'
 
 export interface CustomParams {
     /** Gear: 1 - mechanic; 2-5 -- automat */
