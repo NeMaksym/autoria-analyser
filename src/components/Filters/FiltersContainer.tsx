@@ -1,11 +1,10 @@
 import { useEffect, Dispatch, SetStateAction } from 'react';
 import { useFormik } from 'formik';
-import { omit } from 'lodash'
 
+import { FormValues } from 'types/filters';
 import Filters from 'components/Filters/Filters';
 import { FuelKeys } from 'types/searchParamsTypes';
 import { CustomParams } from 'types/searchParamsTypes';
-
 
 interface Props {
     setFilters: Dispatch<SetStateAction<CustomParams>>
@@ -22,11 +21,11 @@ const FiltersContainer = ({
     showRegionGraph,
     setShowRegionGraph
 }: Props) => {
-    const formik = useFormik({
+    const formik = useFormik<FormValues>({
         initialValues: {
-            price_do: 10000,
+            price_do: '10000',
             engineVolumeTo: undefined,
-            's_yers[0]': undefined,
+            's_yers': undefined,
             fuelType: []
         },
         onSubmit: () => { }
@@ -34,13 +33,15 @@ const FiltersContainer = ({
 
     useEffect(() => {
         const delayDebounceFn = setTimeout(() => {
-            const filters: CustomParams = {
-                ...omit(formik.values, 'fuelType')
-            }
+            const { fuelType, s_yers, engineVolumeTo, price_do } = formik.values;
 
-            formik.values.fuelType.forEach((type, i) => {
-                filters[`type[${i}]` as FuelKeys] = type
-            })
+            const filters: CustomParams = {}
+
+
+            if (price_do) filters.price_do = parseInt(price_do)
+            if (s_yers) filters['s_yers[0]'] = parseInt(s_yers)
+            if (engineVolumeTo) filters.engineVolumeTo = parseInt(engineVolumeTo)
+            fuelType.forEach((type, i) => filters[`type[${i}]` as FuelKeys] = type)
 
             setFilters(filters)
         }, 1500)

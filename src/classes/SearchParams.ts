@@ -69,6 +69,14 @@ class SearchParams {
         return this
     }
 
+    removeYear() {
+        this.params = {
+            ...omit(this.params, ['s_yers[0]', 'po_yers[0]'])
+        }
+
+        return this
+    }
+
     setRegion(regionId?: string) {
         if (typeof regionId === 'string') {
             this.params = {

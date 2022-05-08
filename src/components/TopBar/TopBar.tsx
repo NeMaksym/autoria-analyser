@@ -3,11 +3,12 @@ import { Link } from "react-router-dom";
 import { HashLink } from 'react-router-hash-link';
 import { Typography, AppBar, Container, Toolbar, MenuItem, IconButton, Menu } from '@mui/material'
 import MenuIcon from '@mui/icons-material/Menu';
+import Pages from 'consts/pages';
 
 
 const pages = {
-    graphs: 'Графіки',
-    carpicker: 'Автопідбір',
+    [Pages.graphs]: 'Графіки',
+    [Pages.carpicker]: 'Автопідбір',
 }
 
 const burgerSx = { display: { xs: 'block', sm: 'none' } }
@@ -57,7 +58,7 @@ const TopBar = () => {
                                 <Link key={page} to={page} style={{ color: "inherit", textDecoration: 'none' }}>
                                     <MenuItem onClick={handleCloseNavMenu}>
                                         <Typography textAlign="center">
-                                            {pages[page as 'graphs' | 'carpicker']}
+                                            {pages[page as keyof typeof Pages]}
                                         </Typography>
                                     </MenuItem>
                                 </Link>

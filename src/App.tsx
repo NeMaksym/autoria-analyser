@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Grid } from '@mui/material';
 import { Routes, Route, Navigate } from "react-router-dom";
 
+import Pages from 'consts/pages';
 import Graphs from 'components/Graphs';
 import Info from 'components/Info/Info';
 import Filters from 'components/Filters';
@@ -32,7 +33,7 @@ function App() {
         <Grid item xs={12}>
           <Routes>
             <Route
-              path="/graphs"
+              path={Pages.graphs}
               element={
                 <Graphs
                   filters={filters}
@@ -41,8 +42,8 @@ function App() {
                 />
               }
             />
-            <Route path="/carpicker" element={<CarPicker filters={filters} />} />
-            <Route path="*" element={<Navigate to="graphs" />} />
+            <Route path={Pages.carpicker} element={<CarPicker filters={filters} />} />
+            <Route path="*" element={<Navigate to={Pages.graphs} />} />
           </Routes>
         </Grid>
 
