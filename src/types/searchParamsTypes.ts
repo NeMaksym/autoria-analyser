@@ -69,7 +69,8 @@ export interface CustomParams {
     'po_yers[0]'?: number,
 
     /** Region */
-    'state[2]'?: number,
+    'state[0]'?: number,
+    'city[0]'?: number,
 
     /** Brand */
     'marka_id[0]'?: number,

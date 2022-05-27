@@ -81,11 +81,11 @@ class SearchParams {
         if (typeof regionId === 'string') {
             this.params = {
                 ...this.params,
-                'state[2]': Number(regionId),
+                'state[0]': Number(regionId),
             }
         } else {
             this.params = {
-                ...omit(this.params, ['state[2]'])
+                ...omit(this.params, ['state[0]'])
             }
         }
 

@@ -26,22 +26,27 @@ const FiltersContainer = ({
             price_do: '10000',
             engineVolumeTo: undefined,
             's_yers': undefined,
-            fuelType: []
+            fuelType: [],
+            state: undefined,
+            city: undefined,
         },
         onSubmit: () => { }
     });
 
     useEffect(() => {
         const delayDebounceFn = setTimeout(() => {
-            const { fuelType, s_yers, engineVolumeTo, price_do } = formik.values;
+            const { fuelType, s_yers, engineVolumeTo, price_do, state, city } = formik.values;
 
             const filters: CustomParams = {}
 
-
+            fuelType.forEach((type, i) => filters[`type[${i}]` as FuelKeys] = type)
             if (price_do) filters.price_do = parseInt(price_do)
             if (s_yers) filters['s_yers[0]'] = parseInt(s_yers)
             if (engineVolumeTo) filters.engineVolumeTo = parseInt(engineVolumeTo)
-            fuelType.forEach((type, i) => filters[`type[${i}]` as FuelKeys] = type)
+            if (state && city) {
+                filters['state[0]'] = parseInt(state)
+                filters['city[0]'] = parseInt(city)
+            }
 
             setFilters(filters)
         }, 1500)

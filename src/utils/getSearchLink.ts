@@ -40,6 +40,8 @@ const getSearchLink = (
 
     if (price_do) query.push(`price.USD.lte=${price_do}&price.currency=1`)
     if (engineVolumeTo) query.push(`engine.lte=${engineVolumeTo}`)
+    if (filters["state[0]"]) query.push(`region.id[0]=${filters['state[0]']}`)
+    if (filters["city[0]"]) query.push(`city.id[0]=${filters['city[0]']}`)
 
     return `https://auto.ria.com/search/?${query.join('&')}`
 }

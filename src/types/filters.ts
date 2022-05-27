@@ -4,7 +4,9 @@ export enum FormValueKeys {
     price_do = 'price_do',
     engineVolumeTo = 'engineVolumeTo',
     s_yers = 's_yers',
-    fuelType = 'fuelType'
+    fuelType = 'fuelType',
+    state = 'state',
+    city = 'city',
 }
 
 export interface FormValues {
@@ -12,4 +14,6 @@ export interface FormValues {
     [FormValueKeys.engineVolumeTo]: string | undefined
     [FormValueKeys.s_yers]: string | undefined
     [FormValueKeys.fuelType]: FuelType[]
+    [FormValueKeys.state]: string | undefined
+    [FormValueKeys.city]: string | undefined
 }

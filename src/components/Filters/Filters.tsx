@@ -24,6 +24,7 @@ import {
 import Pages from 'consts/pages';
 import { FormValueKeys } from 'types/filters';
 import { FuelType } from 'types/searchParamsTypes';
+import { CityPicker } from 'components/Filters/components';
 
 const FUEL_LABELS = {
     1: 'Бензин',
@@ -135,6 +136,9 @@ const Filters = ({
                             }
                         </Select>
                     </FormControl>
+                </Grid>
+                <Grid item xs={12}>
+                    <CityPicker formik={formik} />
                 </Grid>
 
                 <Grid item xs={12}>
