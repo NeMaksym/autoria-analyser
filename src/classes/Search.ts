@@ -104,9 +104,9 @@ class Search {
     }
 
     async carPicker(filterParams: SearchParams, gearbox: Gearbox): Promise<CarOption[]> {
-        const MIN_CARS_PER_YEAR = 100  // Filters years that have < 100 cars
-        const MIN_BRAND_COUNT = 20     // Filters brands that have < 20 cars
-        const MIN_MODEL_COUNT = 10     // Filters models that have < 10 cars
+        const YEARS_TO_COUNT = 8
+        const MIN_CARS_PER_YEAR = 20  // Do not account for years that have less
+        const MIN_MODEL_COUNT = 10    // Do not account for models that have less
 
         const carOptions: CarOption[] = []
 
@@ -115,47 +115,49 @@ class Search {
             .removeYear()
             .setGearbox(gearbox)
 
-        // #2. Find top 5 freshiest years, based on filters
+        // #2. Find top {YEARS_TO_COUNT} freshiest years, based on filters
         const years = await this.countYears(filterParams)
 
         const topFiveYears = years
             .filter(yearData => yearData.count >= MIN_CARS_PER_YEAR)
             .sort((a, b) => b.year - a.year)
-            .filter((_item, i) => i < 5)
+            .filter((_item, i) => i < YEARS_TO_COUNT)
             .map(({ year }) => year)
 
-        // #3. Find and filter brands for each year
+        // #3. Find brands for each year
         for (let i = 0; i < topFiveYears.length; i++) {
             const year = topFiveYears[i]
 
             filterParams.setYear(year, year)
 
             const brands = await this.countTopBrands(filterParams)
-            const brandsOverLimit = brands.filter(brand => brand.count >= MIN_BRAND_COUNT)
 
-            // #4. Find and filter model for each brand
-            for (let k = 0; k < brandsOverLimit.length; k++) {
-                const { name: brandName, id: brandId } = brandsOverLimit[k]
+            // #4. Find models for each brand
+            for (let k = 0; k < brands.length; k++) {
+                const { name: brandName, id: brandId } = brands[k]
 
                 const models = await this.countBrandModels(filterParams, brandId)
 
-                models
-                    .filter(model => model.count >= MIN_MODEL_COUNT)
-                    .map(model => {
-                        // #5. Add car model to the result array, if it has enough proposition on the market
-                        return carOptions.push({
-                            year,
-                            brandId,
-                            brandName,
-                            modelId: model.id,
-                            modelName: model.name,
-                            count: model.count,
-                        })
+                models.map(model => {
+                    // #5. Add car model to the result array
+                    const prevYrValue = carOptions.find(option => (
+                        option.year === year + 1 && option.brandId === brandId && option.modelId === model.id
+                    ))
+
+                    return carOptions.push({
+                        year,
+                        brandId,
+                        brandName,
+                        modelId: model.id,
+                        modelName: model.name,
+                        count: model.count + (prevYrValue?.count || 0),
                     })
+                })
             }
         }
 
-        return carOptions
+        // #6 Filter models belove the {MIN_MODEL_COUNT} value
+        return carOptions.filter(option => option.count > MIN_MODEL_COUNT)
     }
 
     /** UTILS */
