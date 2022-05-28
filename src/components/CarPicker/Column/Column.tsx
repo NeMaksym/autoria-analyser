@@ -14,16 +14,15 @@ interface Props {
     filters: CustomParams
     gearbox: Gearbox
     title: string
+    controller: AbortController
 }
 
-const Column = ({ filters, gearbox, title }: Props) => {
+const Column = ({ filters, gearbox, title, controller }: Props) => {
     const [data, setData] = useState<Dictionary<CarOption[]>>({})
     const [isError, setIsError] = useState(false)
     const [isPending, setIsPending] = useState(false)
 
     useEffect(() => {
-        let isCancelled = false;
-
         const searchParams = new SearchParams(filters)
 
         setIsError(false)
@@ -31,21 +30,16 @@ const Column = ({ filters, gearbox, title }: Props) => {
         setData({})
 
         new Search()
-            .carPicker(searchParams, gearbox)
+            .carPicker(searchParams, gearbox, controller)
             .then(data => {
-                if (!isCancelled) {
-                    let groupedData = groupBy(data, 'year')
-                    setData(groupedData)
-                }
+                if (!controller.signal.aborted) setData(groupBy(data, 'year'))
             })
             .catch(() => {
-                if (!isCancelled) setIsError(true)
+                if (!controller.signal.aborted) setIsError(true)
             })
             .finally(() => {
-                if (!isCancelled) setIsPending(false)
+                if (!controller.signal.aborted) setIsPending(false)
             })
-
-        return () => { isCancelled = true }
     }, [filters, gearbox])
 
     return (

@@ -24,34 +24,31 @@ ChartJS.register(
 interface Props {
     filters: CustomParams
     compareGearboxes: boolean
+    controller: AbortController
 }
 
-const ByRegionGraph = ({ filters, compareGearboxes }: Props) => {
+const ByRegionGraph = ({ filters, compareGearboxes, controller }: Props) => {
     const [data, setData] = useState<RegionData[]>([])
     const [isError, setIsError] = useState<boolean>(false)
     const [isPending, setIsPending] = useState<boolean>(false)
 
     useEffect(() => {
-        let isCanceled = false
-
         const searchParams = new SearchParams(filters)
 
         setIsError(false)
         setIsPending(true)
 
         new Search()
-            .byRegion(searchParams)
+            .byRegion(searchParams, controller)
             .then(data => {
-                if (!isCanceled) setData(data)
+                if (!controller.signal.aborted) setData(data)
             })
             .catch(() => {
-                if (!isCanceled) setIsError(true)
+                if (!controller.signal.aborted) setIsError(true)
             })
             .finally(() => {
-                if (!isCanceled) setIsPending(false)
+                if (!controller.signal.aborted) setIsPending(false)
             })
-
-        return () => { isCanceled = true }
     }, [filters])
 
     if (isError) return <ErrorMsg />

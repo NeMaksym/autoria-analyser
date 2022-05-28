@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { styled } from '@mui/material/styles';
 import { Grid, Typography } from '@mui/material';
 
@@ -30,6 +30,12 @@ export default function ({
 }: Params): JSX.Element {
     const [activeBrandId, setActiveBrandId] = useState<number | undefined>(undefined)
 
+    const controller = new AbortController()
+
+    useEffect(() => {
+        return () => { controller.abort("Graphs page is unmounted") }
+    }, [])
+
     return (
         <CustomGridContainer container spacing={2}>
             <Grid item xs={12} container justifyContent="center">
@@ -43,7 +49,11 @@ export default function ({
                 </Typography>
             </Grid>
             <Grid item xs={12}>
-                <ByYearGraph filters={filters} compareGearboxes={comapreGearboxes} />
+                <ByYearGraph
+                    filters={filters}
+                    compareGearboxes={comapreGearboxes}
+                    controller={controller}
+                />
             </Grid>
 
             {
@@ -55,7 +65,11 @@ export default function ({
                             </Typography>
                         </Grid>
                         <Grid item xs={12}>
-                            <ByRegionGraph filters={filters} compareGearboxes={comapreGearboxes} />
+                            <ByRegionGraph
+                                filters={filters}
+                                compareGearboxes={comapreGearboxes}
+                                controller={controller}
+                            />
                         </Grid>
                     </>
                 )
@@ -71,6 +85,7 @@ export default function ({
                     filters={filters}
                     compareGearboxes={comapreGearboxes}
                     setActiveBrandId={setActiveBrandId}
+                    controller={controller}
                 />
             </Grid>
 
@@ -88,6 +103,7 @@ export default function ({
                     filters={filters}
                     compareGearboxes={comapreGearboxes}
                     activeBrandId={activeBrandId}
+                    controller={controller}
                 />
             </Grid>
         </CustomGridContainer>

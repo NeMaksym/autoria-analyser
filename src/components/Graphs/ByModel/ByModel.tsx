@@ -23,18 +23,17 @@ ChartJS.register(
 
 interface Props {
     filters: CustomParams
-    compareGearboxes: boolean,
-    activeBrandId: number | undefined,
+    compareGearboxes: boolean
+    activeBrandId: number | undefined
+    controller: AbortController
 }
 
-const ByBrandGraph = ({ filters, compareGearboxes, activeBrandId }: Props) => {
+const ByBrandGraph = ({ filters, compareGearboxes, activeBrandId, controller }: Props) => {
     const [data, setData] = useState<ModelData[]>([])
     const [isError, setIsError] = useState<boolean>(false)
     const [isPending, setIsPending] = useState<boolean>(false)
 
     useEffect(() => {
-        let isCanceled = false
-
         if (activeBrandId) {
             const searchParams = new SearchParams(filters)
 
@@ -42,19 +41,17 @@ const ByBrandGraph = ({ filters, compareGearboxes, activeBrandId }: Props) => {
             setIsPending(true)
 
             new Search()
-                .byModel(searchParams, activeBrandId)
+                .byModel(searchParams, activeBrandId, controller)
                 .then(data => {
-                    if (!isCanceled) setData(data)
+                    if (!controller.signal.aborted) setData(data)
                 })
                 .catch(() => {
-                    if (!isCanceled) setIsError(true)
+                    if (!controller.signal.aborted) setIsError(true)
                 })
                 .finally(() => {
-                    if (!isCanceled) setIsPending(false)
+                    if (!controller.signal.aborted) setIsPending(false)
                 })
         }
-
-        return () => { isCanceled = true }
     }, [filters, activeBrandId])
 
     if (!activeBrandId) return <h2>Оберіть марку авто натиснувши на стовпчик ☝️</h2>

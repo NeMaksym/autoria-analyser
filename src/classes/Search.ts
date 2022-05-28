@@ -15,20 +15,24 @@ import {
 } from "types/searchTypes";
 
 class Search {
-    async byYear(filterParams: SearchParams): Promise<YearData[]> {
+    async byYear(
+        filterParams: SearchParams,
+        controller: AbortController,
+    ): Promise<YearData[]> {
+
         const yearFrom = filterParams.values["s_yers[0]"]
 
         // #1. Count cars by years in general
         const baseParams = new SearchParams()
-        const yearsBase = await this.countYears(baseParams)
+        const yearsBase = await this.countYears(baseParams, controller)
 
         // #2. Count mechanic gearbox cars, based on filters 
         filterParams.setGearbox(Gearbox.mechanic)
-        const yearsM = await this.countYears(filterParams, yearFrom)
+        const yearsM = await this.countYears(filterParams, controller, yearFrom)
 
         // #3. Count automat gearbox cars, based on filters
         filterParams.setGearbox(Gearbox.auto)
-        const yearsA = await this.countYears(filterParams, yearFrom)
+        const yearsA = await this.countYears(filterParams, controller, yearFrom)
 
         // #4. Combine results
         return yearsBase.map(yearBase => ({
@@ -38,18 +42,22 @@ class Search {
         }))
     }
 
-    async byRegion(filterParams: SearchParams): Promise<RegionData[]> {
+    async byRegion(
+        filterParams: SearchParams,
+        controller: AbortController,
+    ): Promise<RegionData[]> {
+
         // #1. Count cars by region in general
         const baseParams = new SearchParams()
-        const regionsBase = await this.countRegions(baseParams)
+        const regionsBase = await this.countRegions(baseParams, controller)
 
         // #2. Count mechanic gearbox cars, based on filters 
         filterParams.setGearbox(Gearbox.mechanic)
-        const regionsM = await this.countRegions(filterParams)
+        const regionsM = await this.countRegions(filterParams, controller)
 
         // #3. Count automat gearbox cars, based on filters
         filterParams.setGearbox(Gearbox.auto)
-        const regionsA = await this.countRegions(filterParams)
+        const regionsA = await this.countRegions(filterParams, controller)
 
         // #4. Combine results
         return regionsBase.map(regionBase => ({
@@ -59,14 +67,18 @@ class Search {
         }))
     }
 
-    async byBrand(filterParams: SearchParams): Promise<BrandData[]> {
+    async byBrand(
+        filterParams: SearchParams,
+        controller: AbortController,
+    ): Promise<BrandData[]> {
+
         // #1. Count mechanic gearbox cars, based on filters 
         filterParams.setGearbox(Gearbox.mechanic)
-        const brandsM = await this.countTopBrands(filterParams)
+        const brandsM = await this.countTopBrands(filterParams, controller)
 
         // #2. Count automat gearbox cars, based on filters 
         filterParams.setGearbox(Gearbox.auto)
-        const brandsA = await this.countTopBrands(filterParams)
+        const brandsA = await this.countTopBrands(filterParams, controller)
 
         // #3. Combine results
         return brandsM.map(brandM => {
@@ -81,14 +93,19 @@ class Search {
         })
     }
 
-    async byModel(filterParams: SearchParams, brandId: number): Promise<ModelData[]> {
+    async byModel(
+        filterParams: SearchParams,
+        brandId: number,
+        controller: AbortController,
+    ): Promise<ModelData[]> {
+
         // #1. Count mechanic gearbox cars, based on filters 
         filterParams.setGearbox(Gearbox.mechanic)
-        const modelsM = await this.countBrandModels(filterParams, brandId)
+        const modelsM = await this.countBrandModels(filterParams, brandId, controller)
 
         // #2. Count auto gearbox cars, based on filters 
         filterParams.setGearbox(Gearbox.auto)
-        const modelsA = await this.countBrandModels(filterParams, brandId)
+        const modelsA = await this.countBrandModels(filterParams, brandId, controller)
 
         // #3. Combine results
         return modelsM.map(modelM => {
@@ -103,9 +120,14 @@ class Search {
         })
     }
 
-    async carPicker(filterParams: SearchParams, gearbox: Gearbox): Promise<CarOption[]> {
-        const YEARS_TO_COUNT = 8
-        const MIN_CARS_PER_YEAR = 20  // Do not account for years that have less
+    async carPicker(
+        filterParams: SearchParams,
+        gearbox: Gearbox,
+        controller: AbortController,
+    ): Promise<CarOption[]> {
+
+        const YEARS_TO_COUNT = 5
+        const MIN_CARS_PER_YEAR = 40  // Do not account for years that have less
         const MIN_MODEL_COUNT = 10    // Do not account for models that have less
 
         const carOptions: CarOption[] = []
@@ -116,7 +138,7 @@ class Search {
             .setGearbox(gearbox)
 
         // #2. Find top {YEARS_TO_COUNT} freshiest years, based on filters
-        const years = await this.countYears(filterParams)
+        const years = await this.countYears(filterParams, controller)
 
         const topFiveYears = years
             .filter(yearData => yearData.count >= MIN_CARS_PER_YEAR)
@@ -130,13 +152,13 @@ class Search {
 
             filterParams.setYear(year, year)
 
-            const brands = await this.countTopBrands(filterParams)
+            const brands = await this.countTopBrands(filterParams, controller)
 
             // #4. Find models for each brand
             for (let k = 0; k < brands.length; k++) {
                 const { name: brandName, id: brandId } = brands[k]
 
-                const models = await this.countBrandModels(filterParams, brandId)
+                const models = await this.countBrandModels(filterParams, brandId, controller)
 
                 models.map(model => {
                     // #5. Add car model to the result array
@@ -161,15 +183,25 @@ class Search {
     }
 
     /** UTILS */
-    private async countYears(searchParams: SearchParams, startFrom?: number): Promise<YearData[]> {
+    private async countYears(
+        searchParams: SearchParams,
+        controller: AbortController,
+        startFrom?: number,
+    ): Promise<YearData[]> {
+
         const requests = [];
         const years: YearData[] = []
 
         for (let year = startFrom || 2000; year < 2023; year++) {
             searchParams.setYear(year, year)
 
+            const config = {
+                params: searchParams.values,
+                signal: controller.signal,
+            }
+
             const request = axios
-                .get(URL.search, { params: searchParams.values })
+                .get(URL.search, config)
                 .then(({ data }) => {
                     years.push({
                         year,
@@ -185,15 +217,24 @@ class Search {
         return years
     }
 
-    private async countRegions(searchParams: SearchParams): Promise<RegionData[]> {
+    private async countRegions(
+        searchParams: SearchParams,
+        controller: AbortController,
+    ): Promise<RegionData[]> {
+
         const requests: Promise<void>[] = []
         const regions: RegionData[] = []
 
         Object.keys(REGIONS).forEach(regionId => {
             searchParams.setRegion(regionId)
 
+            const config = {
+                params: searchParams.values,
+                signal: controller.signal,
+            }
+
             const request = axios
-                .get(URL.search, { params: searchParams.values })
+                .get(URL.search, config)
                 .then(({ data }) => {
                     regions.push({
                         id: Number(regionId),
@@ -210,15 +251,24 @@ class Search {
         return regions
     }
 
-    private async countTopBrands(searchParams: SearchParams): Promise<BrandData[]> {
+    private async countTopBrands(
+        searchParams: SearchParams,
+        controller: AbortController,
+    ): Promise<BrandData[]> {
+
         const requests: Promise<void>[] = []
         const brands: BrandData[] = []
 
         TOP_BRANDS.forEach(({ name, id }) => {
             searchParams.setBrand(id)
 
+            const config = {
+                params: searchParams.values,
+                signal: controller.signal,
+            }
+
             const request = axios
-                .get(URL.search, { params: searchParams.values })
+                .get(URL.search, config)
                 .then(({ data }) => {
                     brands.push({
                         name,
@@ -235,7 +285,12 @@ class Search {
         return brands
     }
 
-    private async countBrandModels(searchParams: SearchParams, brandId: number): Promise<ModelData[]> {
+    private async countBrandModels(
+        searchParams: SearchParams,
+        brandId: number,
+        controller: AbortController,
+    ): Promise<ModelData[]> {
+
         const brand = getTopBrandById(brandId)
 
         const requests: Promise<void>[] = []
@@ -244,8 +299,13 @@ class Search {
         brand.models?.forEach(({ name, id: modelId }) => {
             searchParams.setBrand(brandId, modelId)
 
+            const config = {
+                params: searchParams.values,
+                signal: controller.signal,
+            }
+
             const request = axios
-                .get(URL.search, { params: searchParams.values })
+                .get(URL.search, config)
                 .then(({ data }) => {
                     models.push({
                         id: modelId,

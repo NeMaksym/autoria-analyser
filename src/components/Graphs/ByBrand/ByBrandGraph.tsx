@@ -25,9 +25,11 @@ interface Props {
     filters: CustomParams
     compareGearboxes: boolean
     setActiveBrandId: Dispatch<SetStateAction<number | undefined>>
+    controller: AbortController
 }
 
-const ByBrandGraph = ({ filters, compareGearboxes, setActiveBrandId }: Props) => {
+const ByBrandGraph = ({ filters, compareGearboxes, setActiveBrandId, controller }: Props) => {
+
     const [data, setData] = useState<BrandData[]>([])
     const [isError, setIsError] = useState<boolean>(false)
     const [isPending, setIsPending] = useState<boolean>(false)
@@ -35,8 +37,6 @@ const ByBrandGraph = ({ filters, compareGearboxes, setActiveBrandId }: Props) =>
     const chartRef = useRef<ChartJS>(null);
 
     useEffect(() => {
-        let isCanceled = false
-
         const searchParams = new SearchParams(filters)
 
         setIsError(false)
@@ -44,19 +44,17 @@ const ByBrandGraph = ({ filters, compareGearboxes, setActiveBrandId }: Props) =>
         setActiveBrandId(undefined)
 
         new Search()
-            .byBrand(searchParams)
+            .byBrand(searchParams, controller)
             .then(data => {
-                if (!isCanceled) setData(data)
+                if (!controller.signal.aborted) setData(data)
             })
             .catch(() => {
-                if (!isCanceled) setIsError(true)
+                if (!controller.signal.aborted) setIsError(true)
             })
             .finally(() => {
-                if (!isCanceled) setIsPending(false)
+                if (!controller.signal.aborted) setIsPending(false)
             })
-
-        return () => { isCanceled = true }
-    }, [filters, setActiveBrandId])
+    }, [filters])
 
     if (isError) return <ErrorMsg />
     if (isPending) return <PendingMsg />
