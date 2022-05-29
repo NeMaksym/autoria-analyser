@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import axios from "axios";
 
 import URL from "consts/url";
@@ -98,14 +99,15 @@ class Search {
         brandId: number,
         controller: AbortController,
     ): Promise<ModelData[]> {
+        const brand = getTopBrandById(brandId)
 
         // #1. Count mechanic gearbox cars, based on filters 
         filterParams.setGearbox(Gearbox.mechanic)
-        const modelsM = await this.countBrandModels(filterParams, brandId, controller)
+        const modelsM = await this.countBrandModels(filterParams, brand, controller)
 
         // #2. Count auto gearbox cars, based on filters 
         filterParams.setGearbox(Gearbox.auto)
-        const modelsA = await this.countBrandModels(filterParams, brandId, controller)
+        const modelsA = await this.countBrandModels(filterParams, brand, controller)
 
         // #3. Combine results
         return modelsM.map(modelM => {
@@ -126,10 +128,10 @@ class Search {
         controller: AbortController,
     ): Promise<CarOption[]> {
 
-        const YEARS_TO_COUNT = 5
-        const MIN_CARS_PER_YEAR = 40  // Do not account for years that have less
-        const MIN_MODEL_COUNT = 10    // Do not account for models that have less
+        const MIN_CARS_PER_YEAR = 40
+        const MIN_MODEL_COUNT = 10
 
+        const brands = _.cloneDeep(TOP_BRANDS)
         const carOptions: CarOption[] = []
 
         // #1. Prepare params
@@ -137,49 +139,57 @@ class Search {
             .removeYear()
             .setGearbox(gearbox)
 
-        // #2. Find top {YEARS_TO_COUNT} freshiest years, based on filters
+        // #2. Find top 5 freshiest years that have {MIN_CARS_PER_YEAR}
         const years = await this.countYears(filterParams, controller)
 
-        const topFiveYears = years
-            .filter(yearData => yearData.count >= MIN_CARS_PER_YEAR)
-            .sort((a, b) => b.year - a.year)
-            .filter((_item, i) => i < YEARS_TO_COUNT)
-            .map(({ year }) => year)
+        const topFiveYears = _(years)
+            .filter(yr => yr.count >= MIN_CARS_PER_YEAR)
+            .sortBy('year')
+            .takeRight(5)
+            .value()
 
-        // #3. Find brands for each year
-        for (let i = 0; i < topFiveYears.length; i++) {
-            const year = topFiveYears[i]
+        // #3. Run from last year to first
+        for (const { year } of topFiveYears) {
+            filterParams.setYear(year)
 
-            filterParams.setYear(year, year)
+            // #4. On each year run through top brands
+            const brandRequests = brands.map(async (brand) => {
 
-            const brands = await this.countTopBrands(filterParams, controller)
+                // #5. Count models for each brand
+                const models = await this.countBrandModels(filterParams, brand, controller)
 
-            // #4. Find models for each brand
-            for (let k = 0; k < brands.length; k++) {
-                const { name: brandName, id: brandId } = brands[k]
+                models.forEach(model => {
+                    // If model has lees than {MIN_MODEL_COUNT} it makes no sense to fetch it with the following years. So just remove it
+                    if (model.count < MIN_MODEL_COUNT && brand.models) {
+                        _.remove(brand.models, item => _.isMatch(item, { id: model.id }))
+                        return
+                    }
 
-                const models = await this.countBrandModels(filterParams, brandId, controller)
+                    // Remove last year option if has the same count value
+                    _.remove(carOptions, option => _.isMatch(option, {
+                        year: year - 1,
+                        brandId: brand.id,
+                        modelId: model.id,
+                        count: model.count
+                    }))
 
-                models.map(model => {
-                    // #5. Add car model to the result array
-                    const prevYrValue = carOptions.find(option => (
-                        option.year === year + 1 && option.brandId === brandId && option.modelId === model.id
-                    ))
-
-                    return carOptions.push({
+                    // Add option to the list of options
+                    carOptions.push({
                         year,
-                        brandId,
-                        brandName,
+                        brandId: brand.id,
+                        brandName: brand.name,
                         modelId: model.id,
                         modelName: model.name,
-                        count: model.count + (prevYrValue?.count || 0),
+                        count: model.count,
                     })
                 })
-            }
+            })
+
+            // On each year run brands requests simultaniusly
+            await Promise.all(brandRequests)
         }
 
-        // #6 Filter models belove the {MIN_MODEL_COUNT} value
-        return carOptions.filter(option => option.count > MIN_MODEL_COUNT)
+        return carOptions
     }
 
     /** UTILS */
@@ -287,17 +297,15 @@ class Search {
 
     private async countBrandModels(
         searchParams: SearchParams,
-        brandId: number,
+        brand: BrandData,
         controller: AbortController,
     ): Promise<ModelData[]> {
-
-        const brand = getTopBrandById(brandId)
 
         const requests: Promise<void>[] = []
         const models: ModelData[] = []
 
         brand.models?.forEach(({ name, id: modelId }) => {
-            searchParams.setBrand(brandId, modelId)
+            searchParams.setBrand(brand.id, modelId)
 
             const config = {
                 params: searchParams.values,

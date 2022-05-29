@@ -59,12 +59,9 @@ class SearchParams {
         return this
     }
 
-    setYear(from: Params["s_yers[0]"], to: Params["po_yers[0]"]) {
-        this.params = {
-            ...this.params,
-            's_yers[0]': from,
-            'po_yers[0]': to,
-        }
+    setYear(from?: Params["s_yers[0]"], to?: Params["po_yers[0]"]) {
+        if (from) this.params['s_yers[0]'] = from
+        if (to) this.params['po_yers[0]'] = to
 
         return this
     }
